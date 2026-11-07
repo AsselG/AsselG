@@ -190,10 +190,90 @@ report(id, reporter_id, target_id, reason, created_at)
 
 ## 9. Open decisions for you
 
-1. **Launch city / country?** Changes legal frame and POI quality. *(Assumed EU/Spain.)*
+1. ~~Launch city / country?~~ **Decided: Barcelona, Spain** → see §10.
 2. **Friends-only forever, or stranger discovery in Phase 2?** Huge difference in safety investment and positioning.
-3. **Social-first or catalogue-first?** My recommendation: build the MVP social layer as specified, but have the catalogue (Phase 3) ready as the fallback if network density proves too low.
+3. **Social-first or catalogue-first?** ~~Social-first~~ → **Revised: AI-built catalogue + friends check-ins together** (see §11.3). AI makes the catalogue cheap enough to ship in the MVP, which fixes the empty-map problem.
 4. **Build team:** solo/no-code prototype (FlutterFlow/Expo + Supabase) vs. hired devs.
+
+---
+
+## 10. Barcelona launch specifics
+
+| Factor | Implication | Confidence |
+|---|---|---|
+| **Open Data BCN** publishes a children's play-areas dataset (`AreesJocsInfantils`, CSV/JSON, CC BY 4.0, published 2023) | Seed the `place` table with every official playground on day one, no OSM scraping needed. Check freshness & columns first. | [Certain] dataset exists; [Guessing] on completeness |
+| City play policy counted **~878 play areas** (2018), unevenly distributed by neighbourhood | Map won't be empty of *places*; "less-crowded playground nearby" is a real feature | [Likely] |
+| City's **children's activities agenda** (barcelona.cat "Amb nens i nenes") is a web listing, not clearly an open dataset | Needs AI extraction (§11.1), with attribution and respect for terms of use | [Likely] |
+| **Trilingual**: Catalan, Spanish, English (large expat/international-family community) | UI in ca/es/en from day one. Content in Catalan must be readable by newcomers → AI translation | [Certain] languages; [Likely] expat size matters |
+| **Extraescolars & casals** culture; schools' parent associations (**AFA/AMPA**) organise them | AFAs are the ideal seed communities: an existing, trusted, dense group of 50–400 families per school | [Likely] |
+| **Newly arrived international families** lack the WhatsApp-group network locals have | Strongest initial segment: highest pain, English-speaking, early adopters | [Guessing] — validate in Phase 0 interviews |
+| Climate: outdoor use year-round; summer heat; rainy days rarer but painful | Weather-aware suggestions (shade, indoor fallback) are high value | [Likely] |
+| Regulator: **AEPD** (Spanish DPA) is among the most active GDPR enforcers in the EU; Spanish age of digital consent is **14** (LOPDGDD) | Budget for a privacy lawyer + DPIA before pilot; parents-only accounts | [Likely] / [Certain] on age 14 |
+| City structure: 10 districts, 73 neighbourhoods | Use *barri* as the coarse-location unit instead of geohash — users understand it | [Certain] counts |
+
+**Recommended pilot:** 2 school AFAs in one district (e.g. Gràcia or Eixample, dense + many families) + 1 international-family community (English-speaking parents' group).
+
+---
+
+## 11. Leveraging AI — and making the product AI-friendly
+
+**Uncomfortable truth first:** AI does not solve the core risk (will friends join check-ins?). No model creates network density. Where AI *does* change the plan is **supply cost**: it makes the activities catalogue cheap to build, which turns the app useful for a single family with zero friends on it. That is the real leverage.
+
+### 11.1 AI inside the product (ranked by value / effort)
+
+| # | Feature | What AI does | Value | Risk / guardrail |
+|---|---|---|---|---|
+| 1 | **Catalogue ingestion** | LLM reads messy sources — city agenda pages, provider websites, Instagram captions, AFA extraescolars PDFs, flyers (photo → vision) — in ca/es/en and outputs structured records: `title, theme, age_min/max, date/time, recurrence, price, language, address, trial_class, booking_url` | **Highest.** Replaces a human curation team; enables catalogue in MVP | Hallucinated dates/prices → schema validation, confidence score, human review queue for low-confidence items, always link to source |
+| 2 | **"Plan my free time" assistant** | Natural language → plan: *"Saturday 10–13, kids 4 and 7, Gràcia, rainy, under €20, something artsy"* → 2–3 options combining catalogue + playgrounds + weather + friends' check-ins | High — the "theme" vision in one interaction | Never send exact location or friend identities to the LLM; resolve those server-side and pass anonymised candidates |
+| 3 | **Frictionless check-in** | Voice/text: *"At Parc de l'Estació del Nord till 6, football"* → place + theme + duration parsed | Medium-high — reduces check-in effort below a WhatsApp message | Confirm screen before posting (never auto-share location) |
+| 4 | **Translation & summarisation** | Catalan provider page → 2-line English summary for expats | Medium | Keep original text accessible |
+| 5 | **Trust & safety moderation** | Classify notes, profile text and reports for abuse/grooming signals; prioritise human review | Medium, essential at scale | AI flags, humans decide; log for audit |
+| 6 | **Personalised ranking** | Learn which themes/places a family likes | Low in MVP (no data yet) | Do later; avoid profiling children |
+| ✗ | AI matching strangers, inferring kids' traits from photos, predicting where families will be | — | — | **Don't.** Privacy-hostile and likely to trip GDPR/AI Act transparency expectations |
+
+### 11.2 Making the product AI-friendly (agents & AI search can use it)
+
+Parents increasingly ask ChatGPT/Claude/Gemini "what can I do with kids in Barcelona this weekend?" **[Likely]**. Be the source those assistants use.
+
+1. **Public, structured catalogue on the web** — every activity/event/trial class gets a public page with **schema.org `Event` / `Course` / `Place` JSON-LD** (age range, price, location, dates, `inLanguage`). AI search engines and Google both consume it. **[Certain]** schema.org is the standard; **[Likely]** it improves AI citation.
+2. **`llms.txt`** + clean sitemap describing the catalogue and API. **[Likely]** low effort, emerging convention.
+3. **MCP server** (Model Context Protocol) exposing *public* tools: `search_activities(theme, age, area, date)`, `get_activity(id)`, `list_playgrounds(barri)`. Lets any MCP-capable assistant plan with your data → acquisition channel.
+4. **Private data only via OAuth, scoped to the user's own account** — e.g. `create_check_in`, `list_my_friends_out_now` behind explicit consent. **Never** expose other families' presence to third-party agents in the MVP. **[Likely]** this is the line regulators and parents will draw.
+5. **Clean public REST/OpenAPI spec** — same reason; also lets providers push listings automatically.
+6. **Provider self-service via AI**: a provider pastes their URL or Instagram handle → AI drafts their listing → provider confirms. Cuts onboarding friction for the supply side.
+
+### 11.3 Revised MVP (Barcelona + AI)
+
+The earlier plan said "social-first, catalogue later". **I'm changing that recommendation** — not because AI is fashionable, but because AI ingestion + Open Data BCN make a decent catalogue cost weeks, not a curation team.
+
+**MVP = three layers on one map:**
+1. **Places** — all official playgrounds (Open Data BCN) + parks/sports centres (OSM)
+2. **Activities & trial classes** — AI-ingested from ~30–50 sources in the pilot districts, human-reviewed
+3. **Friends out now** — the check-in feature from §3, unchanged (friends-only, time-boxed)
+
+Plus: **"Plan my free time"** assistant (11.1 #2) as the headline AI feature, and public activity pages with JSON-LD (11.2 #1). MCP server = Phase 2 (cheap once the API exists).
+
+Day-one value without friends = catalogue + planner. Retention/virality = friends layer. Metrics in §6 still apply, plus: *% of sessions using the planner* and *catalogue accuracy (sampled human audit ≥ 95%)*.
+
+### 11.4 AI architecture notes
+
+- **Pipeline:** sources → fetcher (respect robots.txt/terms) → LLM extraction with strict JSON schema → validation (dates in future, geocodable address, price sane) → dedupe (embedding similarity + same place/time) → review queue → publish.
+- **Planner:** retrieval over your own catalogue (Postgres + PostGIS filters first, `pgvector` for semantic "artsy"/"calm" matching) → LLM composes the answer from retrieved items only, citing item IDs. No free-form invention of activities.
+- **Models:** small/fast model for bulk extraction and parsing; stronger model for the planner. Choose a provider offering an EU data-processing agreement and zero data retention. **[Likely]**
+- **Privacy:** LLM calls receive no names, no friend graph, no precise coordinates — only barri-level area and anonymised candidates. Document this in the DPIA.
+- **EU AI Act:** a planner chatbot is not high-risk, but transparency duties apply (users must know they're talking to AI; AI-generated summaries labelled). **[Likely]** — confirm with counsel.
+- **Cost:** extraction runs in batch (nightly) and is cheap per item; the planner is the variable cost — cap free usage, cache common queries. **[Guessing]** on magnitude until measured.
+
+### 11.5 Updated roadmap
+
+| Phase | Duration [Guessing] | Content |
+|---|---|---|
+| 0. Discovery | 2 wks | Interviews with AFA parents + expat parents; prototype planner with a hand-made catalogue to test demand; DPIA |
+| 1. Catalogue pipeline | 3–4 wks | Open Data BCN import, AI ingestion of pilot-district sources, review tool, public JSON-LD pages |
+| 2. App MVP | 6–8 wks | Map (3 layers), planner, check-ins, friends, ca/es/en |
+| 3. Pilot | 4–6 wks | 2 AFAs + 1 international community |
+| 4. AI-friendly distribution | 2–3 wks | MCP server, OpenAPI, provider self-service listing |
+| 5. Monetisation | later | Featured trial classes / booking commission with providers |
 
 ---
 
@@ -204,3 +284,6 @@ report(id, reporter_id, target_id, reason, created_at)
 - [Pairent (App Store)](https://apps.apple.com/gb/app/pairent/id1575806820)
 - [PlayDates.club (Product Hunt)](https://www.producthunt.com/p/playdates-find-your-family-s-village/playdates-club-find-your-next-playdate)
 - [Inside the Shutdown of Zenly — Pragmatic Engineer](https://blog.pragmaticengineer.com/zenly/)
+- [Open Data BCN — Children's play areas dataset (CC BY 4.0)](https://opendata-ajuntament.barcelona.cat/data/en/dataset/culturailleure-espaisinfantils/resource/c3ed4130-0cbb-4f7d-96b4-45dc43cd7353)
+- [barcelona.cat — Amb nens i nenes (agenda, sports, casals)](https://barcelona.cat/ca/viure-a-bcn/amb-nens-i-nenes)
+- [Barcelona Pla del Joc (play policy)](https://bcnroc.ajuntament.barcelona.cat/jspui/bitstream/11703/122994/1/PlaJOC_resum_web-IIAB.pdf)
