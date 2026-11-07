@@ -1,6 +1,6 @@
 # Family Free-Time App — Research & MVP Plan
 
-> Working name: **Playground** (placeholder). Date: 2026-11-07.
+> Working name: **Kiddu** (from your Figma team name; placeholder). Date: 2026-11-07.
 > Confidence tags: **[Certain]** = evidence, **[Likely]** = strong inference, **[Guessing]** = assumption to validate.
 
 ---
@@ -277,6 +277,84 @@ Day-one value without friends = catalogue + planner. Retention/virality = friend
 
 ---
 
+## 12. Figma prototype
+
+**File:** [Kiddu — MVP Prototype](https://www.figma.com/design/KpH6WDbecx424dZV7tfVst) (team *Kiddu*). Press ▶ Present to click through the flow "Kiddu MVP flow", which starts at 01 Welcome.
+
+| # | Screen | Validates |
+|---|---|---|
+| 01 | Welcome | Value proposition, ca/es/en, "only friends you invite can see you" |
+| 02 | Map: friends out now | 3 layers (friends' pins, activity/trial pins, playgrounds), theme chips, bottom sheet |
+| 03 | "We're out" check-in | AI voice input → form, place-based (not GPS), duration, audience (e.g. AFA class group), privacy copy |
+| 04 | Friend check-in → Join | "On my way · 15 min" one-tap join, who else is going |
+| 05 | AI planner | Natural-language plan, labelled as AI, cites sources, free quota → upsell |
+| 06 | Trial class → Book | Verified provider, slots, "friends booked this", **provider pays on enrolment** |
+| 07 | Kiddu Plus paywall | Free vs. Plus, €4.99/mo or €34.99/yr (prices are placeholders to test) |
+
+Main clickable paths: Welcome → Map → (We're out → Map) · (Anna card → Join → Map) · (Plan tab → planner → plan card → Trial → Book) · (planner upsell → Plus).
+
+Known gaps: map is a stylised drawing, not real tiles; Friends/Me tabs not designed; no onboarding steps for kids' ages, invites or permissions yet.
+
+---
+
+## 13. Monetisation and Barcelona competitors
+
+### 13.1 The uncomfortable truth first
+- **You can't charge for the friends map.** It only works if everyone in the group is on it, and a paywall breaks that. It brings people in; it doesn't earn. **[Likely]**
+- **Spanish families pay little for parenting apps.** Peanut (the best-known mum-social app, with active Barcelona groups) is criticised for a paywall on basic features. Expect a low single-digit % to subscribe. **[Guessing]** Test it, but don't build the business on it.
+- **The money is with providers**: after-school classes (*extraescolars*), summer camps (*casals d'estiu*) and workshops, which need to fill places. A family that enrols in a weekly class is worth months of fees to them. **[Likely]**
+- **Main risk: the trial happens offline, so does the enrolment.** If providers have to report enrolments themselves, some won't. Design the fee so it doesn't depend on that (see 13.3).
+
+### 13.2 Competitors and alternatives in Barcelona
+
+| Player | What it is | How it makes money | Threat / lesson | Confidence |
+|---|---|---|---|---|
+| **WhatsApp / Facebook parent groups** (class, barri, AFA) | Where "anyone at the park?" happens today | Free | **The real competitor** for the friends layer. Your app must take less effort than one message | [Certain] they exist |
+| **Peanut** | Social network for mums; Barcelona groups exist (e.g. single mums' group) | Freemium subscription, paywall criticised | Shows parents will join for connection, but paywalls annoy; mum-only positioning leaves dads/couples out | [Certain] Barcelona groups; [Likely] model |
+| **Kidbridge, MomieGo, Plah** | Nearby-family / playdate apps (mostly US/global) | Paid tiers (MomieGo shows a ~$14.99 tier) | Nobody owns Barcelona; same idea, no local catalogue | [Certain] listings; [Guessing] Barcelona usage is low |
+| **BuscaExtraescolares** | Spanish after-school activity finder + booking; academies get a panel to confirm requests | Provider-side tools (pricing not public); online payments "coming" per their blog | **Closest competitor** for the trial-class layer. No friends layer, no "free time now" | [Likely] |
+| **Atrápalo** (Barcelona HQ) | Leisure/tickets marketplace with a kids' activities section | Commission on bookings | Owns one-off paid activities and tickets; don't compete on tickets | [Certain] category; [Likely] commission |
+| **Celebrae** | Experience booking incl. family plans | Commission on bookings | Same as Atrápalo, gift/experience focus | [Likely] |
+| **City media**: Barcelona Secreta, Time Out Barcelona, Mammaproof Barcelona, Hoy Barcelona, Un Buen Día en Barcelona | Editorial "what to do with kids" guides and agendas | Ads, sponsored articles, affiliate links | They own discovery via Google/Instagram. Possible **partners** (content syndication) more than rivals | [Likely] |
+| **barcelona.cat agenda + Open Data BCN** | Official children's agenda, play areas, sports facilities | Free public service | Free supply for your catalogue; you can't charge for this data itself | [Certain] |
+| **Providers' own booking** (e.g. Little Makers, TBKids) | Workshops/academies with their own online booking, bonos, monthly plans | Direct | They are **customers**, not competitors. They want more trial bookings | [Certain] they exist |
+| **Global references**: KidPass, ActivityHero, Sawyer (US) | Activity marketplaces | KidPass: family credit subscription + provider commission. ActivityHero: free listing, provider pays only per paid registration; $9.99/mo family subscription. Sawyer: provider SaaS tiers + ~15–30% marketplace commission | Proven models to borrow; all US, no friends layer | [Likely]; third-party sources, verify |
+
+**Gap Kiddu fills [Likely]:** nobody in Barcelona combines *friends who are out now* with a *themed catalogue of activities and trials* and an *AI planner*, in ca/es/en.
+
+### 13.3 Recommended revenue model (in order)
+
+| # | Stream | Who pays | Price idea [Guessing — test] | When | Why |
+|---|---|---|---|---|---|
+| 1 | **Pay-per-trial-booking** | Provider | €5–10 per confirmed trial attendee (no-shows free) | Pilot onward | Doesn't depend on providers reporting enrolment; risk-free for them ("pay only for families who came") |
+| 2 | **Enrolment bonus (optional)** | Provider | ~50% of first month's fee if the family enrols, verified via in-app "We enrolled 🎉" prompt to the family | After pilot | Bigger upside; family confirmation reduces reliance on provider honesty |
+| 3 | **Provider Pro (SaaS)** | Provider | €19–39/month: trial calendar, waitlist, auto-reminders, AI-written listing in ca/es/en, stats | Phase 4 | Recurring revenue; replaces Excel/WhatsApp for small academies. BuscaExtraescolares and Sawyer show demand |
+| 4 | **Summer camps (casals) season** | Provider | Featured placement + per-booking fee, Mar–Jun | First spring | Bookings worth hundreds of euros each, all in one season [Likely] |
+| 5 | **Kiddu Plus** | Family | €4.99/mo, €34.99/yr: unlimited AI plans, weekend/rainy-day digest, early camp access, partner discounts | Test in pilot | Only charge for *extras*, never for the friends map or basic catalogue |
+| 6 | **Clearly labelled sponsored listings** | Provider / brands | CPM or fixed weekly slot per barri | With scale | Only "Sponsored" items in lists; **no ads targeted by live location** |
+| 7 | **Free tool for AFAs (B2B2C)** | — (or revenue share) | AFA gets free tool to publish its extraescolars and class groups; optional share of trial fees | Pilot | Gets you dense groups of families from the same school, which the friends map needs; AFAs become distribution partners |
+
+**Never:** sell or share location data; charge to see friends; take money to rank a provider without a "Sponsored" label. Any of these would lose parents' trust and attract scrutiny from the Spanish data-protection authority (AEPD). **[Likely]**
+
+### 13.4 Reality check on the numbers (illustrative, all [Guessing])
+
+| Assumption | Value |
+|---|---|
+| Active families (end of pilot) | 500 |
+| Trials booked / active family / month | 0.1 → 50 trials |
+| Fee per attended trial (80% show) | €7 → **€280/month** |
+| Enrolment rate after trial × bonus | 30% × €20 → **€300/month** |
+| Plus conversion 3% × €4.99 | **€75/month** |
+
+≈ €650/month at 500 families, so this only works at scale: roughly **10k+ active families in Barcelona metro** before it covers 1–2 salaries. Plan funding for the build and pilot, and track **trial bookings per active family** as the money metric from day one.
+
+### 13.5 Pricing experiments for the pilot
+1. Offer 20 pilot providers in 2 districts **free listings for 3 months** in exchange for confirming trial attendance in the app. This tells you the real show-up and enrolment rates.
+2. Show families the Plus paywall (fake-door test: "coming soon, join waitlist") to measure intent before building it.
+3. Ask each provider what they pay today to get a new enrolment (flyers, Instagram ads, Atrápalo). That's your price ceiling.
+
+---
+
 ## Sources
 - [Kidbridge (App Store)](https://apps.apple.com/app/id6503090560)
 - [MomieGo (App Store)](https://apps.apple.com/app/id1091154054)
@@ -287,3 +365,15 @@ Day-one value without friends = catalogue + planner. Retention/virality = friend
 - [Open Data BCN — Children's play areas dataset (CC BY 4.0)](https://opendata-ajuntament.barcelona.cat/data/en/dataset/culturailleure-espaisinfantils/resource/c3ed4130-0cbb-4f7d-96b4-45dc43cd7353)
 - [barcelona.cat — Amb nens i nenes (agenda, sports, casals)](https://barcelona.cat/ca/viure-a-bcn/amb-nens-i-nenes)
 - [Barcelona Pla del Joc (play policy)](https://bcnroc.ajuntament.barcelona.cat/jspui/bitstream/11703/122994/1/PlaJOC_resum_web-IIAB.pdf)
+- [Peanut — Mamis Monomarentales Barcelona group](https://www.peanut-app.io/groups/e8ly-apb/mamis-monomarentales-barcelona)
+- [Peanut app review (paywall criticism)](https://www.whistleout.com/CellPhones/Apps/peanut-app-for-mom-friends)
+- [BuscaExtraescolares — product announcement](https://www.buscaextraescolares.com/blog/presentamos-buscaextraescolares/)
+- [Atrápalo — kids activities Barcelona](https://www.atrapalo.com/actividades/barcelona/barcelona/actividades-infantiles/)
+- [Celebrae — family plans Barcelona](https://www.celebrae.com/blog/planes-familia-barcelona-ninos)
+- [Little Makers Barcelona](https://www.littlemakers.es/barcelona)
+- [Barcelona Secreta — kids](https://barcelonasecreta.com/en/things-to-do-with-kids-in-barcelona/)
+- [Time Out Barcelona — kids](https://www.timeout.com/barcelona/kids/activities/barcelona-for-kids)
+- [KidPass subscription model — TechCrunch (2017)](https://techcrunch.com/2017/05/26/kidpass-raises-5-1-million-for-its-childrens-activity-subscription-service/)
+- [ActivityHero on-demand subscription](https://help.activityhero.com/hc/en-us/articles/360056950192-on-demand-subscription-service)
+- [ActivityHero provider listing](https://business.activityhero.com/new/)
+- [Sawyer fees (third-party review)](https://tutoringplatforms.com/platform/sawyer)
