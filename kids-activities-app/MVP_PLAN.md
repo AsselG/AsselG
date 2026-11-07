@@ -290,6 +290,8 @@ Day-one value without friends = catalogue + planner. Retention/virality = friend
 | 05 | AI planner | Natural-language plan, labelled as AI, cites sources, free quota → upsell |
 | 06 | Trial class → Book | Verified provider, slots, "friends booked this", **provider pays on enrolment** |
 | 07 | Kiddu Plus paywall | Free vs. Plus, €4.99/mo or €34.99/yr (prices are placeholders to test) |
+| 08 | AFA school board | Peachjar-style approved flyers for extraescolars/casals, sign-up deadline, friends' choices (§14) |
+| 09 | Go together | Book a trial and invite friends' families; bring-a-friend offer (§14) |
 
 Main clickable paths: Welcome → Map → (We're out → Map) · (Anna card → Join → Map) · (Plan tab → planner → plan card → Trial → Book) · (planner upsell → Plus).
 
@@ -352,6 +354,63 @@ Known gaps: map is a stylised drawing, not real tiles; Friends/Me tabs not desig
 1. Offer 20 pilot providers in 2 districts **free listings for 3 months** in exchange for confirming trial attendance in the app. This tells you the real show-up and enrolment rates.
 2. Show families the Plus paywall (fake-door test: "coming soon, join waitlist") to measure intent before building it.
 3. Ask each provider what they pay today to get a new enrolment (flyers, Instagram ads, Atrápalo). That's your price ceiling.
+
+---
+
+## 14. Lessons from US competitors → improved idea
+
+### 14.1 The uncomfortable part first
+- **No US company won with a family-paid activity subscription.** KidPass (credits subscription + provider commission) was acquired by edtech company BEGiN in 2021, and BEGiN's parent later went through Chapter 11 restructuring. **[Likely]** Families stop paying when routines settle; providers stay.
+- **The US businesses that last own a channel that already exists** (school flyers, local newsletters, licensed-childcare search), not a new social habit. Kiddu's friends map *is* a new habit, so it needs one of these existing channels to reach families.
+- **Stranger playdate apps (MomieGo, Kidbridge, Plah) are crowded and look like dating apps.** **[Guessing]** Retention is weak once the novelty passes. Don't copy that.
+
+### 14.2 What each US player teaches
+
+| US player | Model | What to copy | What to do better in Barcelona | Confidence |
+|---|---|---|---|---|
+| **Peachjar** | Schools pay a small one-time fee; **community organisations pay to distribute digital flyers** to chosen schools; district approves every flyer; free tier for free events | Pay-per-distribution + school approval gate. Turns paper flyers in backpacks into revenue | Do it through **AFAs**, add a **revenue share for the AFA**, and link flyers to friends ("4 class friends signed up") and one-tap trial booking. Peachjar is just a flyer, with no social layer or booking | [Certain] model; [Guessing] exact prices |
+| **Macaroni KID** | Network of 500+ local "publishers" (mostly parents) running a free weekly family newsletter; they sell local partnerships and keep the revenue, paying a small hosting fee. Acquired by CertifiKID (2020) | **Local human curators**: trusted parents who know their barri | **Barri hosts**: one parent per neighbourhood curates the weekly digest with AI doing 80% of the work (ingestion, translation, layout), and earns from local partnerships. Scales curation and trust without staff | [Likely] — company's own claims |
+| **Winnie** | Free for parents; **providers pay** to fill spaces and waitlists; started with licensed daycare, expanded to camps and au pairs; recently added AI search | Start where the need is **urgent and recurring**, then expand. Providers pay, parents use it free | Kiddu's urgent moments: **September extraescolars sign-up** and **spring casals (summer camps) booking**. Build the app around those two seasons, not just "free afternoon" | [Likely] |
+| **ActivityHero** | Free listing; provider pays **only when a paid registration happens**; $9.99/mo family on-demand subscription | Results-based fee lowers provider risk | Same, plus **family confirms the enrolment** in the app ("We enrolled 🎉") so providers can't under-report | [Likely] |
+| **Sawyer** | Booking/management **SaaS for providers** + marketplace commission | The provider tool is the sticky asset; the marketplace sits on top | Give small Barcelona academies a **free trial-and-waitlist tool** (AI writes the listing in ca/es/en). Supply joins for the tool, then gets demand through Kiddu | [Likely] (third-party pricing) |
+| **KidPass** | Credits subscription for families across many activities | — (cautionary) | Don't make a family subscription the core revenue | [Likely] |
+| **Peanut** | Mum-focused social network; freemium | Community and groups work | Include **dads and all caregivers**; never paywall basic connection | [Certain] model; [Likely] criticism |
+| **Life360 / Zenly** | Live location sharing (family / friends) | Location sharing can reach mass scale | Keep the **opt-in, time-boxed, place-based** check-in; parents accept tracking their own family, not others | [Certain] |
+| **Nextdoor** | Neighbourhood network with address verification | Verification builds trust in a hyperlocal network | Verify through the **school group (AFA vouching / class invite)** instead of address or ID: stronger trust, less friction | [Likely] |
+
+### 14.3 What Kiddu does better: the improved concept
+
+**One-liner:** *Kiddu is the school-and-barri network where Barcelona families see which friends are out now, find activities their kids' friends do, and book trials together.*
+
+1. **School-first social graph (AFA).** Families join through their school class group, not by matching with strangers. Trust and density come together: a class of 25 families fills a map. *(Better than Peanut, Plah, Kidbridge.)*
+2. **AFA school board (Peachjar-style, social).** Providers pay to publish extraescolars and casals on approved school boards; AFAs earn a share; families see "4 class friends signed up". *(Prototype screen 08.)*
+3. **"Go together" booking.** Book a trial and invite friends' families in one tap; provider-funded bring-a-friend discount if both enrol. Kids want to go where their friends go, and providers get two enrolments from one booking. **No US competitor has both the friend graph and booking.** *(Prototype screen 09.)*
+4. **Seasonal peaks.** Build the app around the **September extraescolars** and **March–June casals** booking seasons (deadlines, reminders, "what your class chose"), plus everyday "who's out now".
+5. **Barri hosts (Macaroni-style), AI-assisted.** Local parents curate a weekly digest in ca/es/en with AI; they earn from local partnerships; Kiddu takes a platform share.
+6. **Free provider tool (Sawyer/Winnie-style).** Trial calendar, waitlist, AI-written listings, so the catalogue grows without a sales team.
+7. **Results-based pricing.** Providers pay for attended trials and confirmed enrolments; families pay nothing for the core.
+
+### 14.4 Revised revenue priority (replaces §13.3 order)
+
+| # | Stream | Payer | Why it moved |
+|---|---|---|---|
+| 1 | **AFA board distribution** (pay per school/season, AFA revenue share) | Provider | Proven by Peachjar; money arrives at sign-up seasons; AFAs become your sales channel |
+| 2 | **Pay per attended trial + enrolment bonus** (family-confirmed) | Provider | ActivityHero model, with less under-reporting |
+| 3 | **"Go together" bundles** (Kiddu fee per extra family enrolled) | Provider | Unique to Kiddu; ties revenue to the friend graph |
+| 4 | **Provider Pro SaaS** | Provider | Sawyer model; recurring |
+| 5 | **Barri host partnerships** (platform share) | Local businesses | Macaroni model; local ad revenue without a sales team |
+| 6 | **Kiddu Plus** | Family | Nice-to-have only (KidPass lesson) |
+
+### 14.5 Impact on the pilot
+- Pick **2 schools with active AFAs in one district**, and launch **in early September** (extraescolars season) or **March** (casals season), not in a random month.
+- The first sales conversation is with the **AFA board**, not with families: "free digital board + revenue share + fewer WhatsApp messages."
+- New metrics: % of class families joined per school (target ≥ 40%), flyers published per AFA, "Go together" invites per booking, trial→enrolment rate.
+
+### Sources (US)
+- [Peachjar — how it works for community orgs](https://info.peachjar.com/community-orgs/how-it-works) · [Peachjar pricing for community partners](https://blog.peachjar.com/all-about-peachjar-pricing-for-community-partners) · [Peachjar FAQ](https://peachjar.com/faq)
+- [Macaroni KID — publisher model](https://lowell.macaronikid.com/articles/58b718278416d7417cafeae9/could-you-be-a-macaroni-kid-publisher) · [About Macaroni KID / CertifiKID](https://denton.macaronikid.com/about-us)
+- [Winnie (Wikipedia)](https://en.wikipedia.org/wiki/Winnie_(website)) · [Marketplace: AI and childcare search (2026)](https://www.marketplace.org/episode/2026/05/05/can-ai-improve-your-odds-of-finding-good-childcare) · [Winnie App Store](https://apps.apple.com/us/app/winnie-find-child-care-nearby/id1066620030)
+- [KidPass acquired by BEGiN](https://www.siliconlegal.com/sls-client-kidpass-is-acquired-by-begin/) · [BEGiN parent Chapter 11](https://elevenflo.com/blog/conscious-content-media-chapter-11-bankruptcy)
 
 ---
 
