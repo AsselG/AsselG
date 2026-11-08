@@ -1,0 +1,38 @@
+# Behaviour you control without code. Every value here is covered by a scenario in /features.
+# Change a value -> open a PR -> acceptance tests run -> preview link -> merge.
+
+area:
+  default: sant-cugat
+  default_radius_km: 8          # 01_browse: map shows items within this radius
+  min_items_to_show_area: 40    # 10_areas: new area appears after this many published items
+
+languages: [ca, es, en]         # 08: order = fallback order
+default_language: browser       # browser | ca | es | en
+
+themes: [sport, art, education, fun, nature]   # 02_filters
+
+freshness:
+  warn_after_days: 30           # 03: "Information may be out of date"
+  hide_after_days: 90           # 03: hidden from site
+
+plans:
+  delete_days_after_plan: 7     # 04: plan links auto-delete
+  max_rsvps_per_plan: 30
+
+feedback:
+  hide_after_reports: 3         # 06: hidden until editor review
+
+publishing:
+  auto_publish: false           # 07: start OFF during the pilot; editor approves everything
+  auto_publish_min_confidence: 0.9
+
+ai:
+  extraction_model: claude-haiku-5-5      # cheap, bulk extraction (Batch API)
+  escalation_model: claude-sonnet-5-5     # retry for invalid/low-confidence pages
+  ask_model: claude-haiku-5-5             # 05 (phase 2)
+  ask_daily_limit_per_visitor: 10
+  monthly_budget_eur: 30                  # 11: cost guard
+  golden_set_min_field_accuracy: 0.95     # 11: blocks prompt/model changes below this
+
+weather:
+  rainy_day_chip_min_rain_probability: 0.6   # 02: "Rainy day" chip

@@ -1,0 +1,8 @@
+areas:
+  sant-cugat:
+    name: Sant Cugat del Vallès
+    centre: [41.4721, 2.0861]     # verify
+    radius_km: 8
+    includes: [Valldoreix, Mira-sol, La Floresta, Les Planes, Bellaterra]
+    nearby: [Rubí, Cerdanyola del Vallès, Terrassa, Collserola]
+  # colleague areas are added here later (feature 10)

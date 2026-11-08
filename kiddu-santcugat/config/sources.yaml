@@ -1,0 +1,29 @@
+# Data sources. The pipeline only fetches what is listed and enabled here.
+# Status of each source must be checked before enabling (terms of use, robots.txt).
+shared_regional:
+  - id: osm-playgrounds
+    type: overpass            # OpenStreetMap: leisure=playground|park|sports_centre, amenity=library...
+    enabled: true
+  - id: diba-agenda
+    type: api                 # Diputació de Barcelona open data (do.diba.cat) - library and cultural events by municipality; verify coverage
+    enabled: true
+  - id: gencat-open-data
+    type: api                 # analisi.transparenciacatalunya.cat (Socrata) - check for event/equipment datasets
+    enabled: false
+
+areas:
+  sant-cugat:
+    - id: ajuntament-agenda
+      type: web               # Ajuntament de Sant Cugat agenda pages (no open data portal found) - scrape politely
+      enabled: true
+    - id: biblioteques-sant-cugat
+      type: web
+      enabled: true
+    - id: venues-manual
+      type: manual            # trampoline parks, climbing gyms, indoor play, museums: added by editor
+      enabled: true
+    - id: family-guides
+      type: web               # e.g. Femturisme, Escapada amb nens - check terms; use as hints, link to them
+      enabled: false
+
+blocklist: []
