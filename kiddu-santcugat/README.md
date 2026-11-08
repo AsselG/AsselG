@@ -9,6 +9,16 @@ Built acceptance-first (ATDD): the scenarios in `features/` are the specificatio
 |---|---|
 | <img src="docs/screenshots/home-ca.png" width="300"> | <img src="docs/screenshots/item-en.png" width="300"> |
 
+## Test site
+
+https://kiddu-santcugat.netlify.app (Netlify, free plan). Right now it is behind **Netlify team login**: only people logged into the owner's Netlify team can open it.
+
+Deploy (owner runs it; needs a Netlify token):
+
+```bash
+npx netlify-cli build --offline && npx netlify-cli deploy --no-build --prod
+```
+
 ## Run it
 
 ```bash
@@ -40,6 +50,8 @@ components/                    HomeClient (filters, list, "Near me"), MapView (L
 lib/filters.ts                 the rules: radius, expiry, freshness, theme/age/time/free/indoor
 lib/i18n.ts                    Català / Español / English texts
 lib/server-context.ts          clock, weather (Open-Meteo, no key), test hooks
+app/route.ts                   "/" → /ca, /es or /en from the browser language
+scripts/build-config.mjs       config/*.yaml → lib/generated/config.json (bundled; no file reads when hosted)
 data/catalogue.json            demo catalogue (copy of the test fixture) until the pipeline exists
 tests/fixtures/catalogue.json  fixed test data; fixed clock Wed 2026-11-11 10:00
 tests/steps/*.ts               step definitions: the scenarios' words, executable

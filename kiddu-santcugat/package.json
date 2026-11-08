@@ -10,7 +10,12 @@
     "test": "vitest run",
     "bddgen": "bddgen",
     "test:acceptance": "bddgen && playwright test --trace off",
-    "gate": "npm run typecheck && npm run test && npm run test:acceptance"
+    "gate": "npm run typecheck && npm run test && npm run test:acceptance",
+    "config": "node scripts/build-config.mjs",
+    "predev": "npm run config",
+    "prebuild": "npm run config",
+    "pretest": "npm run config",
+    "pretypecheck": "npm run config"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

@@ -20,7 +20,7 @@ export default defineConfig({
     trace: 'off',
   },
   webServer: {
-    command: `npx next build && npx next start -p ${PORT}`,
+    command: `npm run build && npx next start -p ${PORT}`,
     url: `http://localhost:${PORT}/en`,
     timeout: 240_000,
     reuseExistingServer: false,

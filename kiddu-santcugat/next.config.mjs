@@ -2,6 +2,5 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  outputFileTracingIncludes: { '/**': ['./config/**', './data/**'] },
 };
 export default nextConfig;

@@ -1,7 +1,5 @@
 import 'server-only';
-import fs from 'node:fs';
-import path from 'node:path';
-import YAML from 'yaml';
+import generated from './generated/config.json';
 
 export interface SiteConfig {
   area: { default: string; default_radius_km: number; min_items_to_show_area: number };
@@ -17,14 +15,12 @@ export interface SiteConfig {
 }
 export interface Area { name: string; centre: [number, number]; radius_km?: number; includes?: string[]; nearby?: string[] }
 
-const root = process.cwd();
-const read = (f: string) => YAML.parse(fs.readFileSync(path.join(root, 'config', f), 'utf8'));
-
+/** Built from config/*.yaml by scripts/build-config.mjs (runs before dev, build and tests). */
 export function siteConfig(): SiteConfig {
-  return read('site.yaml');
+  return generated.site as SiteConfig;
 }
 export function areaConfig(id?: string): Area & { id: string } {
-  const areas = read('areas.yaml').areas as Record<string, Area>;
+  const areas = generated.areas as unknown as Record<string, Area>;
   const key = id ?? siteConfig().area.default;
   return { id: key, ...areas[key] };
 }
