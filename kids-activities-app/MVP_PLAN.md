@@ -1,6 +1,13 @@
 # Family Free-Time App — Research & MVP Plan
 
 > Working name: **Kiddu** (from your Figma team name; placeholder). Date: 2026-11-07.
+> ### Current recommendation (v4, 2026-11-08). Read this first
+> The plan evolved over several rounds; earlier sections are kept as history. The current position is **§16**:
+> - **Positioning:** the *social layer* for kids' free time (friends, class groups, school AFAs), **not** another catalogue. Catalogues and AI planners already exist (toddl.co, Bluupi) and AI assistants make listings free.
+> - **Supply:** partner (toddl.co, Fever, venues) + Open Data BCN + AI ingestion for gaps.
+> - **Money:** outcome fees from providers (attended trials, enrolments, "Go together"), AFA school board, agent-ready provider plan, affiliate, family AI concierge. No ads, no paid discovery.
+> - **Sequence:** web catalogue + "plan with friends" links → AFA pilot in Sept/March → native app + friends map → AI concierge + agent bookings → second city.
+>
 > Confidence tags: **[Certain]** = evidence, **[Likely]** = strong inference, **[Guessing]** = assumption to validate.
 
 ---
@@ -454,6 +461,110 @@ Proposal (2026-11-08): MVP = map of every kids' event, activity and place (tramp
 
 ### 15.6 Decision test before building
 Hand-make the catalogue for one district (Gràcia), about 150 items, as a simple web page. Share it in 5 parent WhatsApp groups for 3 weeks. Continue if **≥ 25% of visitors return the next week** and **≥ 10% use "plan with friends"**. If not, the catalogue is a commodity and you go back to the school-group-first approach (§14). **[Guessing]** on thresholds.
+
+---
+
+## 16. Spain market, all competitors, and the AI-era business model (v4)
+
+### 16.1 The uncomfortable part first
+1. **The Barcelona supply side is already taken.** **toddl.co** (Barcelona) sells management software to activity providers *and* runs a booking marketplace for families, and in April 2023 it **acquired BuscaExtraescolares**, Spain's largest directory of activity providers. **[Certain]** Building another catalogue + booking engine for extraescolars means competing with them on their home turf.
+2. **The AI planner is already shipping.** **Bluupi** (Alicante, launched 2026) has an AI assistant that plans family activities using location, ages, budget, time and weather, plus partner tools for listings, bookings and QR tickets. **[Certain]** (press releases + own site). Our "AI planner" (§11) is not a differentiator.
+3. **In an AI world, catalogues become free.** ChatGPT/Claude/Gemini already answer "what to do with kids this weekend", and ChatGPT added apps (on MCP) and ads in 2026. **[Likely]** Anyone whose value is "a list of activities" loses margin to the assistants.
+4. **Barcelona is shrinking for families.** Under-16s fell below 12% of the city population for the first time, and ~6,800 children aged 0–14 left the city in 2025. **[Likely]** (Ajuntament / press). The Barcelona-only market is small (see 16.3).
+
+**What's left that nobody owns [Likely]: the family's social graph** (which friends, classmates and neighbours do what, and when) and **the school channel (AFAs)**. That becomes the whole strategy.
+
+### 16.2 Competitor map: Spain
+
+| Category | Players | Model | Threat to Kiddu |
+|---|---|---|---|
+| **Kids' activity booking + provider SaaS** | **toddl.co** (+ BuscaExtraescolares), Afterscool (older marketplace) | B2B software for providers + family marketplace (fees/commission) | **High** for catalogue/booking. **Low** for social. Partner candidate |
+| **AI family-plans assistant** | **Bluupi** | Free for families; partner tools (listings, bookings, QR tickets, "Insights" analytics) | **High** for catalogue-first + AI planner idea (§15) |
+| **Leisure discovery/ticketing (all ages)** | **Fever** (Madrid; reported valuation $1.8–5.2B, EBITDA-positive), Atrápalo, Celebrae | Ticket commission, featured listings, own experiences | Medium. Owns big paid family events. Partner via affiliate |
+| **Provider-only software** | CampApp, Vivaky | SaaS for camps/extraescolars (sign-ups, payments) | Low. Possible integrations |
+| **Family organisers** | **Niddo** (co-parenting app, Catalan founder, AI assistant coming), generic family calendars | Free / freemium | Medium for the "personal events organizer" |
+| **Parent social** | Peanut, WhatsApp/Facebook groups | Freemium / free | **WhatsApp = the real competitor** for the social layer |
+| **Content/media** | Pequeocio, Mammaproof, Barcelona Secreta, Time Out, Juntines, Consumer.es "Planes con niños" | Ads, sponsored content | Low. Distribution partners |
+| **Public** | barcelona.cat agenda, Open Data BCN | Free | Free supply |
+| **General AI assistants** | ChatGPT, Gemini, Claude | Subscriptions, ads, in-chat apps | **High** long-term for any discovery-only product |
+
+### 16.3 Market size (rough, mostly my calculations)
+| Item | Value | Source / confidence |
+|---|---|---|
+| Spain population (1 Jan 2025) | 49.1M | INE [Certain] |
+| Share aged 0–14 | 12.9% → ~6.3M children | Eurostat [Certain]; multiplication mine |
+| Barcelona city population | 1.73M; under-16 < 12% → ~200k | Padró / press [Likely] |
+| Extraescolars cost per child (2026–27) | €70/month public, €86 concertada, €113 private | OCU [Certain] |
+| Annual extraescolars per child | ~€630–1,017 | El Español survey [Likely] |
+| **Spain extraescolars spend** | ~6.3M × ~60% participate × ~€700 ≈ **€2.5–3B/yr** | **[Guessing]** participation rate |
+| **Barcelona city** | ~165–200k × 60% × €700 ≈ **€70–85M/yr** | **[Guessing]** |
+| Realistic Kiddu take (Barcelona) | ~10% of *new* enrolments × €30–40 fee ≈ **€0.3–0.5M/yr** | **[Guessing]** |
+
+**Conclusion [Likely]:** Barcelona works as a pilot city, not as a business. The plan must reach other Spanish cities (Madrid, Valencia, Catalonia's other towns) through the AFA/AMPA model, which works the same way nationwide.
+
+### 16.4 Head-to-head with the strongest competitor: toddl.co
+
+I chose toddl.co over Fever (bigger, but all-ages ticketing) and Bluupi (newer, AI-first) because it is **in Barcelona, in kids' activities, and already has both sides** (providers and families).
+
+| Dimension | toddl.co | Kiddu (v4) |
+|---|---|---|
+| Core job | Find and book a class/camp | "What do we do with our free time, **with whom**?" |
+| Customer | Providers first (SaaS), families second | Families + school groups first, providers pay for results |
+| Supply | 2,000+ classes/camps/events (reported), national provider network via BuscaExtraescolares | **Don't rebuild**: Open Data BCN + partners' feeds (toddl, Fever, Bluupi?) + AI ingestion for gaps |
+| Social layer | None found (Afterscool had parent communication; status unclear) | Friends/class graph, "We're out", Go together, AFA board |
+| Free/spontaneous time | No (scheduled classes) | Yes: playgrounds, parks, playdates, weekend plans |
+| Traffic | ~17k monthly visitors (older report) | Grows through WhatsApp invites and school groups |
+| Funding | €500k pre-seed (2023) | — |
+| Weakness | Booking marketplace without a reason to return weekly; discovery exposed to AI assistants | Needs dense school groups; must win against WhatsApp |
+
+**Recommendation [Likely]: partner, don't fight.** Offer toddl.co (and later Fever/Bluupi) a demand partnership: Kiddu shows their trials/camps inside the friends/school context and routes bookings to them for an affiliate fee. Kiddu keeps the social graph; they keep the provider software. If they refuse, Kiddu still has Open Data + AI ingestion.
+
+### 16.5 Business model designed for the AI era
+
+**Principles**
+1. **Never charge for discovery.** Assistants make listings free. **[Likely]**
+2. **Own what AI can't scrape:** the private friend/class graph, verified attendance and enrolment outcomes, AFA relationships, and trust. **[Likely]**
+3. **Get paid for outcomes, not attention.** Assistants don't show your banners; ads move inside ChatGPT/Google. Charge for attended trials, enrolments and filled places. **[Likely]**
+4. **Be callable by agents.** Publish an MCP server / ChatGPT app / Claude connector so a parent can say "book Saturday's trial for Martí and invite Anna's family" from any assistant. **[Likely]**
+5. **Use cheap models for bulk work** (ingestion, translation) and keep inference cost under ~10% of revenue per family. **[Guessing]**
+
+**Revenue streams (v4 ranking)**
+
+| # | Stream | Who pays | How it fits the AI world | Price idea [Guessing] |
+|---|---|---|---|---|
+| 1 | **Outcome fees**: attended trial + family-confirmed enrolment, incl. "Go together" extra families | Provider | Pays for results wherever the booking starts (app, web, or AI assistant via our MCP) | €5–10 per attended trial; €20–40 per enrolment |
+| 2 | **AFA school board** (Peachjar-style) with revenue share to AFA | Provider | Private school channel that public AI assistants can't reach | Per school per season, e.g. €30–80 |
+| 3 | **"Agent-ready" provider plan** | Provider | Makes small providers' availability bookable by AI assistants (structured feed, real-time slots, MCP/ACP-compatible) + AI-written listings in ca/es/en + demand insights ("families nearby searched for weekend robotics; nobody offers it") | €19–39/month, or included via partners (toddl etc.) |
+| 4 | **Affiliate on partner bookings** (toddl, Fever, Atrápalo, venues like trampoline parks/climbing gyms) | Partner | Kiddu is the family/social front end; partners hold inventory | Partner's affiliate %/flat fee |
+| 5 | **Family AI concierge (Kiddu Plus)** | Family | A personal agent that tracks sign-up deadlines, fills forms, books, coordinates RSVPs with friends' families, rebooks on rain. Competes with Niddo-style organisers; value = saved mental load, not listings | €3.99–5.99/month |
+| 6 | **B2B2C family benefit** | Employers | Companies add the concierge to employee benefits for parents | Per employee per month |
+| 7 | **Anonymised demand insights** | City / providers / brands | Aggregated "what families look for and can't find" by barri. Only aggregated, never individual or location-level data | Reports / dashboards |
+
+**Removed:** sponsored listings as a main stream (agents bypass them), any ads based on location, and charging families to see friends.
+
+### 16.6 Improved plan (v4)
+
+| Phase | Months | Product | Business goal |
+|---|---|---|---|
+| **0. Validate** | 0–1 | Hand-made Gràcia web catalogue (§15.6) **+ AFA interviews + talk to toddl.co about a partnership** | Decide: partner feed or own ingestion |
+| **1. Web catalogue + plan with friends** | 1–3 | PWA: places, weekend/rainy events, trials (from partners + Open Data + AI); "Plan with friends" WhatsApp RSVP links; MCP server for public data from day one | Weekly returning families; invites per plan |
+| **2. AFA pilot** | 3–6 (Sept or March season) | AFA board, class groups, "Go together" booking, outcome fees live | ≥ 40% of class families joined; first provider revenue |
+| **3. Native app + social** | 6–9 | "We're out", friends map, spontaneous playdates (when graph is dense) | Check-ins with joins; retention |
+| **4. AI concierge + agent bookings** | 9–12 | Kiddu Plus concierge; booking via ChatGPT/Claude apps; agent-ready provider plan | Paying families; agent-originated bookings |
+| **5. Second city** | 12+ | Madrid or Valencia via AMPA networks | Proves it scales beyond Barcelona |
+
+**Kill criteria:** if after the AFA pilot < 25% of class families join, or providers won't pay per attended trial, the social thesis is wrong. Fall back to being an AI concierge on top of partners' inventory.
+
+### Sources (§16)
+- [toddl.co €500k pre-seed (EU-Startups, 2023)](https://www.eu-startups.com/2023/11/barcelona-based-toddl-co-raises-e500k-pre-seed-to-boost-the-digitisation-of-the-childrens-activities-sector/) · [toddl.co acquires BuscaExtraescolares (El Referente)](https://elreferente.es/inversiones/toddl-co-cierra-ronda-medio-millon-euros-liderada-fondo-bolsa-social/) · [PitchBook — BuscaExtraEscolares](https://pitchbook.com/profiles/company/541082-71) · [Emprendedores — toddl story](https://emprendedores.es/casos-de-exito/emprendimiento-extraescolares/)
+- [Bluupi launch (Iberian Press)](https://www.iberianpress.es/noticia/alicante-una-plataforma-inteligente-para-descubrir-actividades-familiares/73834) · [Bluupi](https://bluupi.com/) · [Bluupi Insights](https://www.iberianpress.es/noticia/como-la-inteligencia-artificial-de-bluupi-y-su-tecnologia-insights-pueden-revolucionar-tu-actividad/75996) · [Bluupi on Google Play](https://play.google.com/store/apps/details?id=com.bluupi.app)
+- [Fever (Wikipedia)](https://en.wikipedia.org/wiki/Fever_(app)) · [Fever — Dealroom](https://app.dealroom.co/companies/fever) · [Fever — Multiples](https://multiples.vc/private-comps/fever)
+- [Afterscool (El Referente)](https://elreferente.es/?p=12307) · [Fundación Bankinter — Spanish edtech startups](https://www.fundacionbankinter.org/noticias/5-startups-educativas-espanolas-que-debes-conocer/) · [CampApp](https://campapp.es/mayo-2026-actividades-incidencias-medicacion) · [Vivaky](https://www.vivaky.app/)
+- [Niddo (Merca2, 2026)](https://www.merca2.es/2026/02/19/familias-app-nido-2353361/) · [Niddo App Store](https://apps.apple.com/app/id6748092035)
+- [Consumer.es — kids' leisure directories](https://www.consumer.es/?p=76772)
+- [OCU vuelta al cole 2026](https://www.ocu.org/organizacion/prensa/notas-de-prensa/2026/vueltacoledatos260826) · [El Español — extraescolares 2026](https://www.elespanol.com/observatorio-educacion/20260915/padres-pagaran-extraescolares-nuevo-curso-idiomas-ano-deportes/1003744383374_0.html)
+- [INE population 2025](https://ine.es/dyngs/Prensa/EDES_EMN2025.htm) · [Eurostat 0–14 share (Trading Economics)](https://tradingeconomics.com/spain/proportion-of-population-aged-0-14-years-eurostat-data.html) · [eldiario.es — Barcelona children](https://www.eldiario.es/catalunya/barcelona-ciudad-ninos-80-casas-no-vive-menor-15-anos_1_12346294.html) · [Ara — families leaving Barcelona](https://en.ara.cat/society/young-families-with-small-children-are-leaving-barcelona_1_5397214.html)
+- [ChatGPT apps with Booking/Expedia (PhocusWire)](https://www.phocuswire.com/openai-chatgpt-apps-expedia-booking-tripadvisor) · [Agentic booking commissions (Hospitality Net)](https://www.hospitalitynet.org/opinion/4133767/the-agentic-booking-question-no-one-has-answered-who-gets-the-commission) · [MCP/ACP/UCP explained (Conduit)](https://www.conduit.ai/blog/agentic-commerce-for-hotels)
 
 ---
 
