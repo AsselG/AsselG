@@ -414,6 +414,49 @@ Known gaps: map is a stylised drawing, not real tiles; Friends/Me tabs not desig
 
 ---
 
+## 15. Option evaluated: catalogue-first MVP (map of all kids' events, activities and places)
+
+Proposal (2026-11-08): MVP = map of every kids' event, activity and place (trampoline parks, climbing gyms, playgrounds…). Later: personal events organizer, then spontaneous playdate finder.
+
+### 15.1 Verdict
+**Right order, wrong format and too broad.** Catalogue first fixes the empty-map problem: one family gets value on day one with no friends on the app. But "a map of everything" on its own is a **commodity**: Google Maps, Time Out, Barcelona Secreta, Atrápalo, the city agenda and ChatGPT already answer "what to do with kids this weekend". **[Likely]**
+
+### 15.2 Risks of catalogue-only
+| Risk | Why | Confidence |
+|---|---|---|
+| **No reason to install an app** | Parents search Google/Instagram/ChatGPT for "plans amb nens"; nobody downloads an app for listings they can google | [Likely] |
+| **Low frequency** | Weekly at best, so it's easily forgotten; no network effect protects you | [Likely] |
+| **Events go stale** | "All events" means hundreds of expiring items per week; one wrong date and parents stop trusting it. Places (trampoline park, climbing gym) are stable; events aren't | [Likely] |
+| **Hard to add social later** | People who installed a listings app are not a friend network. Foursquare split check-ins into a separate app (Swarm) in 2014: discovery and social are hard to keep in one product | [Certain] split; [Likely] lesson |
+
+### 15.3 What I'd do instead (same idea, changed)
+1. **Web first, not an app.** Build the catalogue as a fast mobile website/PWA with one public page per place/event (schema.org markup, see §11.2). It gets found on Google and by AI assistants, costs less, and needs no install. **Build the native app only when the social features arrive** (they need push notifications and location).
+2. **Narrow and reliable, not "all".** Launch with:
+   - **Places** (stable): playgrounds (Open Data BCN), trampoline parks, climbing gyms, indoor play, museums with kids' programmes, beaches, with filters for age, indoor/outdoor, price, shade.
+   - **This weekend + rainy day** curated events (AI-ingested, human-checked).
+   - **Free trials** (the revenue hook from §13–14).
+   Rule: **better 300 correct items than 3,000 half-wrong ones.**
+3. **Ship the organizer within weeks, as a share link.** "Plan → invite friends" sends a WhatsApp link; friends answer *I'm in / maybe* **without installing anything**. This is the bridge: it uses the WhatsApp groups parents already have, and every invite brings new parents and builds the friend graph you need for playdates later.
+4. **Spontaneous playdates only when the graph is dense enough**, e.g. a parent has ≥ 5 connected families, or ≥ 30% of a class is on the app. Before that, the feature shows an empty map.
+
+### 15.4 Revised sequence
+| Phase | Product | Goal / metric |
+|---|---|---|
+| **1. Catalogue (web/PWA)** ~6–8 wks | Map + list of places, weekend/rainy-day events, free trials; filters by age, theme, distance; ca/es/en | Weekly returning visitors; Google/AI-search traffic; trial bookings |
+| **2. Organizer (share links)** +3–4 wks | "Plan this with friends" → WhatsApp link → RSVP without install; saved plans | **Invites per plan, % of invitees who sign up** (this builds the friend graph) |
+| **3. Native app + "We're out"** | Push, check-ins, friends map, Go together booking | Check-ins per week, % check-ins with a join |
+| **4. Spontaneous playdates** | "Who's free now" among friends/class groups | Meetups that actually happen |
+
+### 15.5 Money in the catalogue phase
+- **Venues pay** (trampoline parks, climbing gyms, indoor play): featured placement and **booking/ticket referral fees**. These are commercial businesses that already pay for ads. **[Likely]**
+- Free trials (pay per attended trial, §13–14).
+- No family subscription in this phase.
+
+### 15.6 Decision test before building
+Hand-make the catalogue for one district (Gràcia), about 150 items, as a simple web page. Share it in 5 parent WhatsApp groups for 3 weeks. Continue if **≥ 25% of visitors return the next week** and **≥ 10% use "plan with friends"**. If not, the catalogue is a commodity and you go back to the school-group-first approach (§14). **[Guessing]** on thresholds.
+
+---
+
 ## Sources
 - [Kidbridge (App Store)](https://apps.apple.com/app/id6503090560)
 - [MomieGo (App Store)](https://apps.apple.com/app/id1091154054)
