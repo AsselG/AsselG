@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(/features/**)",
+      "Write(/features/**)",
+      "Edit(/config/**)",
+      "Write(/config/**)"
+    ],
+    "allow": [
+      "Bash(npm run test:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npx playwright test:*)"
+    ]
+  }
+}

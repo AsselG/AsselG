@@ -1,0 +1,3 @@
+# Product owner must approve any change to the specification or behaviour config
+/features/ @AsselG
+/config/   @AsselG
