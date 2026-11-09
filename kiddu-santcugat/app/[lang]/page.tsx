@@ -35,6 +35,7 @@ export default async function Home({
       cards={cards}
       rainy={rainy}
       demo={!!catalogue.meta.demo}
+      now={ctx.now}
     />
   );
 }

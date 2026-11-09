@@ -15,11 +15,11 @@ export default async function LangLayout({ children, params }: { children: React
     <html lang={lang}>
       <body>
         <header className="top">
-          <a className="brand" href={`/${lang}`}><b>k</b>kiddu</a>
+          <a className="brand" href={`/${lang}`}><span className="logo" aria-hidden>🏡</span>kiddu</a>
           <Suspense fallback={null}><LangSwitch current={lang} /></Suspense>
         </header>
         <main className="wrap">{children}</main>
-        <footer>{t(lang, 'privacy')}</footer>
+        <footer><div><strong>{t(lang, 'madeBy')}</strong></div><div data-testid="privacy">{t(lang, 'privacy')}</div></footer>
       </body>
     </html>
   );

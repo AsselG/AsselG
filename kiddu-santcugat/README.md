@@ -5,9 +5,11 @@ Built acceptance-first (ATDD): the scenarios in `features/` are the specificatio
 
 > Status: **milestone M1 (browse) done**: features 01, 02, 03, 08 pass (27 scenarios). Data is a **demo fixture**, not real places yet.
 
-| Home (Català, rainy day) | Item page (English) |
-|---|---|
-| <img src="docs/screenshots/home-ca.png" width="300"> | <img src="docs/screenshots/item-en.png" width="300"> |
+**Mission:** it takes a village to raise a child. Kiddu helps busy Sant Cugat parents find good things to do with their kids, and each other.
+
+| Phone | Item page | Desktop (Català) |
+|---|---|---|
+| <img src="docs/screenshots/home-phone.png" width="220"> | <img src="docs/screenshots/item-phone.png" width="220"> | <img src="docs/screenshots/home-desktop-ca.png" width="360"> |
 
 ## Test site
 
@@ -16,7 +18,8 @@ https://kiddu-santcugat.netlify.app (Netlify, free plan). Right now it is behind
 Deploy (owner runs it; needs a Netlify token):
 
 ```bash
-npx netlify-cli build --offline && npx netlify-cli deploy --no-build --prod
+npx netlify-cli build --offline && npx netlify-cli deploy --no-build --dir .netlify/static --prod
+# --dir .netlify/static matters: deploying .next leaves out CSS/JS and the site shows unstyled HTML
 ```
 
 ## Run it

@@ -11,7 +11,8 @@ Then('all interface text is in {string}', async ({ page }, name: string) => {
   const d = DICTS[lang];
   await expect(page.getByRole('button', { name: d.nearMe })).toBeVisible();
   await expect(page.getByTestId('when-filters')).toContainText(d.when_weekend);
-  await expect(page.locator('footer')).toHaveText(d.privacy);
+  await expect(page.getByTestId('privacy')).toHaveText(d.privacy);
+  await expect(page.locator('footer')).toContainText(d.madeBy);
   for (const other of Object.keys(DICTS).filter((l) => l !== lang) as Lang[]) {
     if (DICTS[other].nearMe !== d.nearMe) await expect(page.getByText(DICTS[other].nearMe, { exact: true })).toHaveCount(0);
   }
