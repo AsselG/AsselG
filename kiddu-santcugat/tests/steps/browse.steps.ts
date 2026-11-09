@@ -88,7 +88,7 @@ Then('the list scrolls to the same item', async ({ page, world }) => {
 });
 
 When('I tap {string}', async ({ page }, label: string) => {
-  await page.getByRole('button', { name: label }).click();
+  await page.getByRole('button', { name: label }).or(page.getByRole('link', { name: label })).first().click();
 });
 
 Then('the browser asks for my location', async ({ page }) => {
@@ -121,7 +121,8 @@ Then('I see its title, theme icon, age range, price label, distance and when it 
   const n = await cards.count();
   for (let i = 0; i < n; i++) {
     const c = cards.nth(i);
-    for (const part of ['card-title', 'card-icon', 'card-age', 'card-price', 'card-distance', 'card-when']) {
+    await expect(c.getByTestId('card-icon').locator('svg'), 'theme icon').toHaveCount(1);
+    for (const part of ['card-title', 'card-age', 'card-price', 'card-distance', 'card-when']) {
       await expect(c.getByTestId(part), part).not.toBeEmpty();
     }
   }

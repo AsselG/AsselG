@@ -4,15 +4,12 @@ import { pick, t } from './i18n';
 import { ageLabel, distanceLabel, longDate, priceLabel, whenLabel } from './format';
 import { hasAge } from './filters';
 
-export const THEME_ICON: Record<Theme, string> = { sport: '⚽', art: '🎨', education: '📚', fun: '🎈', nature: '🌳' };
-
 export interface CardView {
   id: string;
   type: Item['type'];
   title: string;
   themes: Theme[];
   themeLabels: string[];
-  icon: string;
   lat: number;
   lng: number;
   indoor: boolean;
@@ -36,7 +33,6 @@ export function toCard(v: VisibleItem, lang: Lang, now: string): CardView {
     title: pick(i.title, lang, i.originalLanguage),
     themes: i.themes,
     themeLabels: i.themes.map((th) => t(lang, `theme_${th}` as const)),
-    icon: THEME_ICON[i.themes[0]] ?? '📍',
     lat: i.lat,
     lng: i.lng,
     indoor: i.indoor,

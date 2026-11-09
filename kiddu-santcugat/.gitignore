@@ -7,3 +7,5 @@ next-env.d.ts
 *.tsbuildinfo
 lib/generated/
 .netlify/
+.test-store/
+.data/

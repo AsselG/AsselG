@@ -15,9 +15,9 @@ interface Props {
 function icon(c: CardView, selected: boolean) {
   return L.divIcon({
     className: '',
-    html: `<div class="pin t-${c.themes[0]}${selected ? ' selected' : ''}" data-testid="pin" data-id="${c.id}" aria-label="${c.title.replace(/"/g, '&quot;')}">${c.icon}</div>`,
-    iconSize: [38, 38],
-    iconAnchor: [19, 19],
+    html: `<div class="pin t-${c.themes[0]}${selected ? ' selected' : ''}" data-testid="pin" data-id="${c.id}" aria-label="${c.title.replace(/"/g, '&quot;')}"></div>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
   });
 }
 

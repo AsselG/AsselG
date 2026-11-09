@@ -20,10 +20,10 @@ export default defineConfig({
     trace: 'off',
   },
   webServer: {
-    command: `npm run build && npx next start -p ${PORT}`,
+    command: `rm -rf .test-store && npm run build && npx next start -p ${PORT}`,
     url: `http://localhost:${PORT}/en`,
     timeout: 240_000,
     reuseExistingServer: false,
-    env: { CATALOGUE_PATH: 'tests/fixtures/catalogue.json', KIDDU_TEST_HOOKS: '1' },
+    env: { CATALOGUE_PATH: 'tests/fixtures/catalogue.json', KIDDU_TEST_HOOKS: '1', KIDDU_STORE_DIR: '.test-store', KIDDU_ADMIN_KEY: 'test-admin-key' },
   },
 });

@@ -20,11 +20,20 @@ export interface World {
   lang?: string;
   when?: string;
   requests: string[];
+  groupName?: string;
+  groupId?: string;
+  inviteUrl?: string;
+  planUrl?: string;
+  organiserUrl?: string;
+  planDay?: string;
+  planTitle?: string;
+  visitors: Record<string, import('@playwright/test').Page>;
+  extra: Record<string, import('@playwright/test').Page>;
 }
 
 export const test = base.extend<{ world: World }>({
   world: async ({}, use) => {
-    await use({ now: FIXED_NOW, requests: [] });
+    await use({ now: FIXED_NOW, requests: [], visitors: {}, extra: {} });
   },
   context: async ({ context }, use) => {
     await context.addCookies([
