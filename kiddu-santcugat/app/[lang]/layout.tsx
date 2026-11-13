@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import { isLang, t } from '@/lib/i18n';
-import { myGroupId } from '@/lib/session';
+import { currentProfile } from '@/lib/session';
 import LangSwitch from '@/components/LangSwitch';
 import MainNav from '@/components/MainNav';
 
@@ -13,14 +13,15 @@ export const viewport: Viewport = { width: 'device-width', initialScale: 1 };
 export default async function LangLayout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
-  const gid = await myGroupId();
+  const me = await currentProfile();
+  const gid = me?.groupIds[0];
   return (
     <html lang={lang}>
       <body>
         <header className="topbar">
           <div className="topbar-inner">
             <a className="brand" href={`/${lang}`}><span className="brand-mark" aria-hidden>k</span>kiddu</a>
-            <MainNav lang={lang} classHref={gid ? `/${lang}/class/${gid}` : `/${lang}/class`} labels={{ explore: t(lang, 'navExplore'), cls: t(lang, 'navClass') }} />
+            <MainNav lang={lang} classHref={gid ? `/${lang}/class/${gid}` : `/${lang}/class`} labels={{ explore: t(lang, 'navExplore'), casals: t(lang, 'navCasals'), cls: t(lang, 'navClass'), family: t(lang, 'navFamily') }} />
             <Suspense fallback={null}><LangSwitch current={lang} /></Suspense>
           </div>
         </header>

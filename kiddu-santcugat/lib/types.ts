@@ -52,3 +52,27 @@ export interface Filters {
   free?: boolean;
   indoor?: boolean;
 }
+
+export interface CasalTurn { start: string; end: string }
+export interface Casal {
+  id: string;
+  status: 'published' | 'draft' | 'rejected';
+  name: Localized;
+  provider: string;
+  town: string;
+  lat: number;
+  lng: number;
+  themes: Theme[];
+  ageMin: number;
+  ageMax: number;
+  languages: Lang[];
+  pricePerWeek: number | null;
+  hours: string;
+  extendedCare: string | null;
+  turns: CasalTurn[];
+  /** YYYY-MM-DD */
+  registrationOpens: string;
+  registrationDeadline: string;
+  sourceUrl: string;
+  lastChecked: string;
+}

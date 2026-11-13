@@ -36,3 +36,11 @@ ai:
 
 weather:
   rainy_day_chip_min_rain_probability: 0.6   # 02: "Rainy day" chip
+
+profile:
+  max_friends: 50                # 13: a family cannot connect with more families than this
+
+casals:
+  season: 2027-summer
+  share_with_friends_default: false   # 15: families must switch sharing on; privacy first
+  registration_soon_days: 30          # 15: "registration opens soon" badge

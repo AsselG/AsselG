@@ -44,3 +44,16 @@ export function whenLabel(item: Item, lang: Lang, now: string): string {
 export function distanceLabel(km: number): string {
   return km < 1 ? `${Math.round(km * 1000)} m` : `${km.toFixed(1)} km`;
 }
+
+/** "21–25 Jun" or "28 Jun–2 Jul". */
+export function weekLabel(start: string, end: string, lang: Lang): string {
+  const a = parseNaive(start), b = parseNaive(end);
+  const month = new Intl.DateTimeFormat(LOCALES[lang], { month: 'short', timeZone: 'UTC' });
+  const ma = month.format(a), mb = month.format(b);
+  return ma === mb ? `${a.getUTCDate()}–${b.getUTCDate()} ${ma}` : `${a.getUTCDate()} ${ma}–${b.getUTCDate()} ${mb}`;
+}
+
+/** "15 March 2027". */
+export function fullDate(day: string, lang: Lang): string {
+  return new Intl.DateTimeFormat(LOCALES[lang], { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(parseNaive(day));
+}

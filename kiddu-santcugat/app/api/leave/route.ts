@@ -1,15 +1,13 @@
 import type { NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
-import { groupById, leaveGroup, memberCookieName, memberFromCookie } from '@/lib/social';
-import { clearCookie, readForm, see } from '@/lib/http';
+import { groupById, leaveGroup } from '@/lib/social';
+import { readForm, see } from '@/lib/http';
+import { currentProfile } from '@/lib/session';
 
+/** Leaving a class removes the family from it and from its playdates; the family profile stays. */
 export async function POST(req: NextRequest) {
   const form = await readForm(req);
   const g = await groupById(form.get('groupId'));
-  const res = see(req, `/${form.lang}`);
-  if (!g) return res;
-  const m = memberFromCookie(g, (await cookies()).get(memberCookieName(g.id))?.value);
-  if (m) await leaveGroup(g, m.id);
-  clearCookie(res, memberCookieName(g.id));
-  return res;
+  const me = await currentProfile();
+  if (g && me && g.members.some((m) => m.id === me.id)) await leaveGroup(g, me);
+  return see(req, `/${form.lang}`);
 }

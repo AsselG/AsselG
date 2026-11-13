@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { CalendarDays, MapPin, Share2, Users, XCircle } from 'lucide-react';
+import { CalendarDays, Lock, MapPin, Share2, Users, XCircle } from 'lucide-react';
 import { isLang, t, tn } from '@/lib/i18n';
 import { dayLabel } from '@/lib/format';
 import { dateOf } from '@/lib/time';
 import { now as clock, } from '@/lib/server-context';
 import { getPlan } from '@/lib/social';
-import { goingCount } from '@/lib/social-logic';
-import { groupById, memberOf, organiserToken, origin } from '@/lib/session';
+import { canViewPlan, goingCount } from '@/lib/social-logic';
+import { currentProfile, groupById, organiserToken, origin } from '@/lib/session';
 import { siteConfig } from '@/lib/config';
 
 export const dynamic = 'force-dynamic';
@@ -20,9 +20,21 @@ export default async function PlanPage({ params, searchParams }: { params: Promi
   const plan = await getPlan(id, await clock());
   if (!plan) notFound();
   const group = plan.groupId ? await groupById(plan.groupId) : null;
-  const member = await memberOf(group);
+  const me = await currentProfile();
   const token = await organiserToken(plan.id, sp.o);
   const isOrganiser = !!token && token === plan.organiserToken;
+  if (!canViewPlan(plan, me, group, isOrganiser)) {
+    // Private event: nothing about it is revealed, not even the title.
+    return (
+      <div className="stack">
+        <div className="panel" data-testid="private-event">
+          <p className="eyebrow"><Lock className="i" size={15} aria-hidden />{t(lang, 'planWithFriends')}</p>
+          <p style={{ fontSize: 17, margin: '8px 0 0' }}>{t(lang, 'privateEvent')}</p>
+        </div>
+      </div>
+    );
+  }
+  const member = me;
   const url = `${await origin()}/${lang}/p/${plan.id}`;
   const when = `${dayLabel(dateOf(plan.start), lang)}, ${plan.start.slice(11)}`;
   const status = { going: t(lang, 'statusGoing'), maybe: t(lang, 'statusMaybe'), no: t(lang, 'statusNo') };
@@ -38,6 +50,7 @@ export default async function PlanPage({ params, searchParams }: { params: Promi
           <span data-testid="plan-day" data-day={dateOf(plan.start)}><CalendarDays className="i" size={15} aria-hidden />{when}</span>
           {plan.itemId && <span><MapPin className="i" size={15} aria-hidden /><a href={`/${lang}/item/${plan.itemId}`}>{t(lang, 'place')}</a></span>}
         </p>
+        {plan.address && <p className="meta" style={{ margin: '8px 0 0' }}><span><MapPin className="i" size={15} aria-hidden /><span data-testid="plan-address">{plan.address}</span></span></p>}
         {plan.note && <p style={{ margin: '12px 0 0', fontSize: 16 }} data-testid="plan-note">{plan.note}</p>}
         {plan.organiserName && <p className="note">{t(lang, 'planBy', { name: plan.organiserName })}</p>}
         <p style={{ margin: '14px 0 0' }}><span className="pill" data-testid="going-count">{tn(lang, 'going', goingCount(plan))}</span></p>

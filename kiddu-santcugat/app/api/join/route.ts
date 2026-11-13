@@ -1,21 +1,27 @@
 import type { NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
-import { groupByInvite, joinGroup, memberCookieName, memberFromCookie } from '@/lib/social';
-import { cleanName, parseAges } from '@/lib/social-logic';
-import { readForm, see, setCookie } from '@/lib/http';
-import { now } from '@/lib/server-context';
+import { createProfile, groupByInvite, joinGroup } from '@/lib/social';
+import { profileFromForm } from '@/lib/profile-form';
+import { readForm, see, setProfileCookie } from '@/lib/http';
+import { currentProfile } from '@/lib/session';
+import { now as clock } from '@/lib/server-context';
 
+/** Joining a class uses the family profile on this phone; without one, a first name creates it. */
 export async function POST(req: NextRequest) {
   const form = await readForm(req);
   const invite = form.get('invite');
   const g = await groupByInvite(invite);
   if (!g) return see(req, `/${form.lang}/class`);
-  const existing = memberFromCookie(g, (await cookies()).get(memberCookieName(g.id))?.value);
-  if (existing) return see(req, `/${form.lang}/class/${g.id}`);
-  const name = cleanName(form.get('firstName'));
-  if (!name) return see(req, `/${form.lang}/g/${invite}?error=name`);
-  const m = await joinGroup(g, name, parseAges(form.get('ages')), await now());
+  const now = await clock();
+  let me = await currentProfile();
+  let created = false;
+  if (!me) {
+    const input = profileFromForm(form);
+    if (!input) return see(req, `/${form.lang}/g/${invite}?error=name`);
+    me = await createProfile({ ...input, interests: [], languages: [] }, now);
+    created = true;
+  }
+  await joinGroup(g, me, now);
   const res = see(req, `/${form.lang}/class/${g.id}`);
-  setCookie(res, req, memberCookieName(g.id), `${m.id}.${m.secret}`);
+  if (created) setProfileCookie(res, req, me);
   return res;
 }

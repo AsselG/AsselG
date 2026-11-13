@@ -25,10 +25,74 @@ export async function createGroup(page: Page, world: World, name: string) {
 
 export async function joinGroup(page: Page, world: World, name: string, age?: number) {
   await page.goto(world.inviteUrl!);
-  await page.getByLabel('Your first name').fill(name);
-  if (age != null) await page.getByLabel("Children's ages (optional)").fill(String(age));
-  await page.getByRole('button', { name: 'Join the class' }).click();
+  const nameField = page.getByLabel('Your first name');
+  if (await nameField.count()) {
+    await nameField.fill(name);
+    if (age != null) await page.getByLabel("Children's ages (optional)").fill(String(age));
+    await page.getByRole('button', { name: 'Join the class' }).click();
+  } else {
+    await page.getByRole('button', { name: new RegExp(`^Join the class as ${name}$`) }).click(); // device already has a family profile
+  }
   await page.waitForURL(/\/class\//);
+}
+
+export interface ProfileInput { name: string; age?: number; interests?: string[]; languages?: string[] }
+
+export async function createProfile(page: Page, p: ProfileInput) {
+  await page.goto('/en/me');
+  await page.getByLabel('Your first name').fill(p.name);
+  if (p.age != null) await page.getByLabel("Children's ages (optional)").fill(String(p.age));
+  for (const i of p.interests ?? []) await page.getByRole('group', { name: 'Interests' }).getByLabel(i, { exact: true }).check();
+  for (const l of p.languages ?? []) await page.getByRole('group', { name: 'Languages' }).getByLabel(l, { exact: true }).check();
+  await page.getByRole('button', { name: 'Create family profile' }).click();
+  await page.getByTestId('profile-name').waitFor();
+}
+
+export const pathOf = (url: string) => url.replace(/^https?:\/\/[^/]+/, '');
+
+/** `a` shares the personal link, `b` opens it and connects. */
+export async function connect(a: Page, b: Page) {
+  await a.goto('/en/me');
+  const link = pathOf(await a.getByTestId('my-invite-url').inputValue());
+  await b.goto(link);
+  await b.getByRole('button', { name: 'Connect' }).click();
+  await b.waitForURL(/\/me$/);
+}
+
+export async function friendNames(p: Page): Promise<string[]> {
+  await p.goto('/en/me');
+  await p.getByTestId('profile-name').waitFor();
+  return p.getByTestId('friend').evaluateAll((els) => els.map((e) => e.getAttribute('data-name')!));
+}
+
+/** Creates a plan from the plan form. audience: 'friends' | 'link'. Returns the plan path. */
+export async function createPrivatePlan(page: Page, world: World, o: { place?: string; other?: { name: string; address?: string }; only?: string[]; day?: string; time?: string; group?: string }) {
+  await page.goto(`/en/plan/new${o.group ? `?group=${o.group}` : ''}`);
+  if (o.other) {
+    await page.getByLabel('Where').selectOption({ label: 'Another place (write it below)' });
+    await page.getByLabel('Place name').fill(o.other.name);
+    if (o.other.address) await page.getByLabel('Address for invited families (optional)').fill(o.other.address);
+  } else if (o.place) {
+    await page.getByLabel('Where').selectOption({ label: o.place });
+  }
+  await selectDay(page, o.day ?? 'Saturday');
+  await page.getByLabel('Time').fill(o.time ?? '11:00');
+  if (!o.group) {
+    await page.getByLabel('My connected friends').check();
+    if (o.only) {
+      const boxes = page.getByRole('group', { name: 'Who is invited' }).getByRole('checkbox');
+      for (let i = 0; i < (await boxes.count()); i++) {
+        const label = (await boxes.nth(i).getAttribute('data-name'))!;
+        if (o.only.includes(label)) await boxes.nth(i).check(); else await boxes.nth(i).uncheck();
+      }
+    }
+  }
+  await page.getByRole('button', { name: 'Create plan' }).click();
+  await page.waitForURL(/\/p\/[^/?]+/);
+  const url = new URL(page.url());
+  world.planUrl = url.pathname;
+  world.organiserUrl = url.pathname + url.search;
+  world.planTitle = (await page.getByTestId('plan-title').textContent()) ?? '';
 }
 
 export async function selectDay(page: Page, day: string) {

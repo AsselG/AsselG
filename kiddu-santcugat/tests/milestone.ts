@@ -7,4 +7,7 @@ export const MILESTONE_FEATURES = [
   'features/08_languages_and_privacy.feature',
   'features/09_pilot_class_groups.feature',
   'features/12_find_families_and_playdates.feature',
+  'features/13_family_profile_and_friends.feature',
+  'features/14_invited_plans_on_map.feature',
+  'features/15_casal_planning.feature',
 ];

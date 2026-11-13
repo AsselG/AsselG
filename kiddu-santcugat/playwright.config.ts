@@ -24,6 +24,6 @@ export default defineConfig({
     url: `http://localhost:${PORT}/en`,
     timeout: 240_000,
     reuseExistingServer: false,
-    env: { CATALOGUE_PATH: 'tests/fixtures/catalogue.json', KIDDU_TEST_HOOKS: '1', KIDDU_STORE_DIR: '.test-store', KIDDU_ADMIN_KEY: 'test-admin-key' },
+    env: { CATALOGUE_PATH: 'tests/fixtures/catalogue.json', CASALS_PATH: 'tests/fixtures/casals.json', KIDDU_TEST_HOOKS: '1', KIDDU_STORE_DIR: '.test-store', KIDDU_ADMIN_KEY: 'test-admin-key' },
   },
 });

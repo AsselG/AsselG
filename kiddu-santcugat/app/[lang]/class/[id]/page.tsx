@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { CalendarDays, LogOut, Plus, Users } from 'lucide-react';
+import { CalendarDays, Check, LogOut, Plus, UserPlus, Users } from 'lucide-react';
 import { isLang, t, tn } from '@/lib/i18n';
 import { dayLabel } from '@/lib/format';
 import { dateOf } from '@/lib/time';
 import { now as clock } from '@/lib/server-context';
-import { popularItems, upcomingGroupPlans } from '@/lib/social';
-import { goingCount, matchesAge, type Member } from '@/lib/social-logic';
+import { popularItems, profileById, upcomingGroupPlans } from '@/lib/social';
+import { goingCount, matchesAge, type Profile } from '@/lib/social-logic';
 import { groupById, memberOf } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
@@ -31,15 +31,16 @@ export default async function ClassPage({ params, searchParams }: { params: Prom
   const age = sp.age && /^\d{1,2}$/.test(sp.age) ? Number(sp.age) : undefined;
   const plans = await upcomingGroupPlans(group.id, now);
   const popular = popularItems(plans);
-  const members = [...group.members].sort((a, b) => (a.id === me.id ? -1 : b.id === me.id ? 1 : a.joinedAt.localeCompare(b.joinedAt)));
+  const ordered = [...group.members].sort((a, b) => (a.id === me.id ? -1 : b.id === me.id ? 1 : a.joinedAt.localeCompare(b.joinedAt)));
+  const members = (await Promise.all(ordered.map((m) => profileById(m.id)))).filter((p): p is Profile => !!p);
   const shown = age == null ? members : members.filter((m) => matchesAge(m, age));
-  const kids = (m: Member) => m.kidAges.length === 0 ? t(lang, 'agesNotShared') : t(lang, m.kidAges.length === 1 ? 'kidsOne' : 'kidsMany', { ages: m.kidAges.join(' & ') });
+  const kids = (m: Profile) => m.kidAges.length === 0 ? t(lang, 'agesNotShared') : t(lang, m.kidAges.length === 1 ? 'kidsOne' : 'kidsMany', { ages: m.kidAges.join(' & ') });
 
   return (
     <div className="stack">
       <div className="page-head">
         <h1 data-testid="group-name">{group.name}</h1>
-        <p>{tn(lang, 'popularCount', group.members.length)}</p>
+        <p>{tn(lang, 'popularCount', members.length)}</p>
       </div>
 
       <section className="panel" data-testid="upcoming">
@@ -93,7 +94,20 @@ export default async function ClassPage({ params, searchParams }: { params: Prom
             {shown.map((m) => (
               <li key={m.id} data-testid="family" data-name={m.firstName} data-ages={m.kidAges.join(',')}>
                 <span className="person"><span className="avatar" aria-hidden>{m.firstName.slice(0, 1).toUpperCase()}</span><span>{m.firstName}{m.id === me.id ? ` (${t(lang, 'you')})` : ''}</span></span>
-                <span className="status" data-testid="family-kids">{kids(m)}</span>
+                <span className="mini">
+                  <span className="status" data-testid="family-kids">{kids(m)}</span>
+                  {m.id !== me.id && (
+                    me.friendIds.includes(m.id) ? <span className="badge-ok" data-testid="connected"><Check className="i" size={14} aria-hidden />{t(lang, 'connectedBadge')}</span>
+                    : m.requestIds.includes(me.id) ? <span className="status" data-testid="request-sent">{t(lang, 'requestSent')}</span>
+                    : me.requestIds.includes(m.id) ? <a className="link" href={`/${lang}/me`}>{t(lang, 'wantsToConnect')}</a>
+                    : (
+                      <form method="post" action="/api/connect" style={{ margin: 0 }}>
+                        <input type="hidden" name="lang" value={lang} /><input type="hidden" name="action" value="request" /><input type="hidden" name="id" value={m.id} /><input type="hidden" name="back" value="class" />
+                        <button className="btn secondary small" type="submit"><UserPlus className="i" size={15} aria-hidden />{t(lang, 'connectBtn')}</button>
+                      </form>
+                    )
+                  )}
+                </span>
               </li>
             ))}
           </ul>

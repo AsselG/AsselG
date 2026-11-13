@@ -3,11 +3,11 @@
 Website with places, events and activities for families in Sant Cugat del Vallès and around.
 Built acceptance-first (ATDD): the scenarios in `features/` are the specification, owned by the product owner.
 
-> Status: **M1 browse + class groups and playdates** (features 01–04, 08, 09, 12): 40 acceptance scenarios and 20 unit tests pass. Data is a **demo fixture**, not real places yet.
+> Status: **M1 browse + class groups, playdates, family profiles, invited plans on the map, casal planner** (features 01–04, 08, 09, 12–15): 65 acceptance scenarios and 28 unit tests pass. Data is a **demo fixture**, not real places or casals yet.
 
-| Explore | Class group | Playdate | Join |
+| Explore + invitations | My family | Casals | My casal plan |
 |---|---|---|---|
-| <img src="docs/screenshots/home.png" width="170"> | <img src="docs/screenshots/class.png" width="170"> | <img src="docs/screenshots/plan.png" width="170"> | <img src="docs/screenshots/join.png" width="170"> |
+| <img src="docs/screenshots/home.png" width="170"> | <img src="docs/screenshots/me.png" width="170"> | <img src="docs/screenshots/casals.png" width="170"> | <img src="docs/screenshots/casal-plan.png" width="170"> |
 
 ## Test site
 
@@ -55,7 +55,9 @@ components/                    HomeClient (filters, list, "Near me"), MapView (L
 lib/filters.ts                 the rules: radius, expiry, freshness, theme/age/time/free/indoor
 lib/i18n.ts                    Català / Español / English texts
 lib/social.ts, social-logic.ts   class groups, plans, RSVPs (rules in social-logic.ts, storage in social.ts + store.ts)
-app/api/*                      form endpoints: groups, join, leave, plans, rsvp, cancel, health
+app/api/*                      form endpoints: groups, join, leave, plans, rsvp, cancel, profile, connect, casals, health
+app/[lang]/me, f, restore      family profile, personal connect link, recovery link
+app/[lang]/casals              casal browse + my casal plan; data in data/casals.json (tests: CASALS_PATH)
 app/[lang]/p, g, class, plan   plan page, invite/join page, class page, plan form
 lib/server-context.ts          clock, weather (Open-Meteo, no key), test hooks
 app/route.ts                   "/" → /ca, /es or /en from the browser language
@@ -67,12 +69,14 @@ tests/unit/                    Vitest unit tests
 ```
 
 ## What the social features store (read before real families use it)
-- **Class group:** name, invite token. **Family (member):** first name, optional children's ages (numbers only), join time, a secret kept in a cookie on their phone.
-- **Plan:** place, date and time, note (max 140 characters), first names of families answering. Deleted `plans.delete_days_after_plan` days after the plan date, on first access.
-- Leaving a group removes the family's name from the group and from all its plans.
-- No children's names or photos, no phone numbers, no emails, no accounts.
-- **Before the pilot:** privacy notice, consent wording and a data-retention statement for this data (GDPR; children's ages count as personal data). Not written yet.
-- **Known gaps:** no way for an admin to remove a family from a group; no reporting or blocking; no rate limiting on forms; storage has no transactions, so two simultaneous answers to one plan can overwrite each other.
+- **Family profile (one per phone, a cookie):** first name, optional children's ages (numbers), interests, languages, a personal connect link, a private recovery link, class memberships, connections, casal choices.
+- **Class group:** name, invite token, member ids. **Connection:** both families agreed (personal link, or a request between families of the same class). Nobody sees friends of friends.
+- **Plan:** place (catalogue or written), optional address (shown only to authorised families, never on the map), date and time, note (max 140 characters), audience (link, class or chosen friends), answers by first name. Deleted `plans.delete_days_after_plan` days after the plan date, on first access.
+- **Casal plan:** which casal week each family picked and whether registered. Visible to connected families only if the family switches sharing on (default in `config/site.yaml`: off).
+- **Delete my family** removes the profile, class memberships, connections, answers, and the plans it organised. Leaving a class removes the family from that class and its playdates.
+- No children's names or photos, no phone numbers, no emails, no passwords.
+- **Before the pilot:** privacy notice, consent wording and a data-retention statement for this data (GDPR; children's ages and the social graph are personal data). Not written yet.
+- **Known gaps:** no admin removal of a family from a class; no reporting or blocking; no rate limiting on forms; recovery and connect links are bearer links (whoever holds them gets in); the store has no transactions and every list is a scan, so it is fine for dozens of families, not thousands; casal weeks are Monday–Friday turns (Christmas casals are daily); Catalan and Spanish texts are not reviewed by a native speaker.
 
 ## Privacy (features/08)
 No cookies (except test-only hooks when `KIDDU_TEST_HOOKS=1`), no analytics yet, location used only on the phone after consent, no child data.

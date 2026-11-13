@@ -6,7 +6,7 @@ import type { CardView } from '@/lib/view';
 import type { Key } from '@/lib/i18n';
 import { distanceKm } from '@/lib/geo';
 import { distanceLabel } from '@/lib/format';
-import { Baby, CloudRain, Clock, Euro, House, Info, LocateFixed, MapPin, TriangleAlert, X } from 'lucide-react';
+import { Baby, CloudRain, Clock, Euro, House, Info, LocateFixed, MapPin, TriangleAlert, Users, X } from 'lucide-react';
 import { ThemeIcon } from './Icons';
 
 const MapView = dynamic(() => import('./MapView'), { ssr: false, loading: () => <div className="map" /> });
@@ -22,6 +22,7 @@ interface Props {
   cards: CardView[];
   rainy: boolean;
   demo: boolean;
+  plans: { id: string; title: string; lat: number | null; lng: number | null; when: string; going: string; role: string }[];
 }
 
 function href(lang: Lang, f: Filters, patch: Partial<Record<keyof Filters, unknown>>): string {
@@ -75,6 +76,27 @@ export default function HomeClient(p: Props) {
         <p>{d.tagline}</p>
       </div>
 
+      {p.plans.length > 0 && (
+        <section data-testid="my-plans" className="my-plans">
+          <div className="section-head"><h2>{d.myPlansTitle}</h2></div>
+          <ul className="list two">
+            {p.plans.map((pl) => (
+              <li key={pl.id} className="card" data-testid="my-plan" data-id={pl.id}>
+                <div>
+                  <div className="theme-label" style={{ color: 'var(--accent)' }}>{pl.role}</div>
+                  <h3><a href={`/${p.lang}/p/${pl.id}`} data-testid="my-plan-link">{pl.title}</a></h3>
+                  <div className="meta">
+                    <span><Clock className="i" size={14} aria-hidden />{pl.when}</span>
+                    <span><Users className="i" size={14} aria-hidden />{pl.going}</span>
+                    {pl.lat == null && <span><MapPin className="i" size={14} aria-hidden />{d.noPin}</span>}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section className="filters" aria-label="Filters">
         <nav className="seg" aria-label="When" data-testid="when-filters">
           {(['any', 'today', 'tomorrow', 'weekend'] as const).map((w) => (
@@ -119,7 +141,7 @@ export default function HomeClient(p: Props) {
       {note && <p className="note" role="status" data-testid="location-note">{note}</p>}
 
       <div className="map" data-testid="map" data-area={p.areaName} data-center-lat={p.center[0]} data-center-lng={p.center[1]}>
-        <MapView center={p.center} me={me} cards={cards} selected={selected} onSelect={setSelected} />
+        <MapView center={p.center} me={me} cards={cards} selected={selected} onSelect={setSelected} plans={p.plans} lang={p.lang} />
       </div>
 
       <div className="section-head">

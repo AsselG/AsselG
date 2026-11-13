@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { Users } from 'lucide-react';
 import { isLang, t } from '@/lib/i18n';
-import { myGroupId } from '@/lib/session';
+import { currentProfile } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = { robots: { index: false, follow: false } };
@@ -10,7 +10,7 @@ export const metadata: Metadata = { robots: { index: false, follow: false } };
 export default async function ClassLanding({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
-  const gid = await myGroupId();
+  const gid = (await currentProfile())?.groupIds[0];
   if (gid) redirect(`/${lang}/class/${gid}`);
   return (
     <div className="stack">

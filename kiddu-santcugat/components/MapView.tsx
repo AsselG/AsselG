@@ -10,6 +10,8 @@ interface Props {
   cards: CardView[];
   selected: string | null;
   onSelect: (id: string) => void;
+  plans: { id: string; title: string; lat: number | null; lng: number | null }[];
+  lang: string;
 }
 
 function icon(c: CardView, selected: boolean) {
@@ -21,7 +23,16 @@ function icon(c: CardView, selected: boolean) {
   });
 }
 
-export default function MapView({ center, me, cards, selected, onSelect }: Props) {
+function planIcon(title: string) {
+  return L.divIcon({
+    className: '',
+    html: `<div class="plan-pin" data-testid="plan-pin" data-title="${title.replace(/"/g, '&quot;')}" aria-label="${title.replace(/"/g, '&quot;')}"></div>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+  });
+}
+
+export default function MapView({ center, me, cards, selected, onSelect, plans, lang }: Props) {
   return (
     <MapContainer center={center} zoom={12} style={{ height: '100%', width: '100%' }} scrollWheelZoom={false}>
       <TileLayer
@@ -36,6 +47,10 @@ export default function MapView({ center, me, cards, selected, onSelect }: Props
           zIndexOffset={selected === c.id ? 1000 : 0}
           eventHandlers={{ click: () => onSelect(c.id) }}
         />
+      ))}
+      {plans.filter((p) => p.lat != null && p.lng != null).map((p) => (
+        <Marker key={`plan-${p.id}`} position={[p.lat!, p.lng!]} icon={planIcon(p.title)} zIndexOffset={900}
+          eventHandlers={{ click: () => { window.location.href = `/${lang}/p/${p.id}`; } }} />
       ))}
       {me && <CircleMarker center={me} radius={8} pathOptions={{ color: '#3d7bf5' }} />}
     </MapContainer>

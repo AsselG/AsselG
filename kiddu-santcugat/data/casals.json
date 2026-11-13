@@ -1,0 +1,142 @@
+{
+ "meta": {
+  "demo": true,
+  "season": "2027-summer",
+  "note": "TEST FIXTURE - fictional casals for acceptance tests and local demo."
+ },
+ "casals": [
+  {
+   "id": "c-forest",
+   "status": "published",
+   "name": {
+    "en": "Test Forest Casal",
+    "ca": "Test Forest Casal",
+    "es": "Test Forest Casal"
+   },
+   "provider": "Test Nature Association",
+   "town": "Sant Cugat del Vallès",
+   "lat": 41.469,
+   "lng": 2.079,
+   "themes": [
+    "nature",
+    "fun"
+   ],
+   "ageMin": 3,
+   "ageMax": 12,
+   "languages": [
+    "ca"
+   ],
+   "pricePerWeek": 120,
+   "hours": "09:00–17:00",
+   "extendedCare": "07:45–09:00 and 17:00–18:30",
+   "turns": [
+    {
+     "start": "2027-06-21",
+     "end": "2027-06-25"
+    },
+    {
+     "start": "2027-06-28",
+     "end": "2027-07-02"
+    },
+    {
+     "start": "2027-07-05",
+     "end": "2027-07-09"
+    },
+    {
+     "start": "2027-07-12",
+     "end": "2027-07-16"
+    }
+   ],
+   "registrationOpens": "2027-03-15",
+   "registrationDeadline": "2027-05-31",
+   "sourceUrl": "https://example.org/casals/c-forest",
+   "lastChecked": "2026-11-05"
+  },
+  {
+   "id": "c-sports",
+   "status": "published",
+   "name": {
+    "en": "Test Sports Casal",
+    "ca": "Test Sports Casal",
+    "es": "Test Sports Casal"
+   },
+   "provider": "Test Sports Club",
+   "town": "Sant Cugat del Vallès",
+   "lat": 41.478,
+   "lng": 2.096,
+   "themes": [
+    "sport"
+   ],
+   "ageMin": 6,
+   "ageMax": 14,
+   "languages": [
+    "ca",
+    "es"
+   ],
+   "pricePerWeek": 135,
+   "hours": "09:00–16:30",
+   "extendedCare": "08:00–09:00",
+   "turns": [
+    {
+     "start": "2027-06-28",
+     "end": "2027-07-02"
+    },
+    {
+     "start": "2027-07-05",
+     "end": "2027-07-09"
+    },
+    {
+     "start": "2027-07-12",
+     "end": "2027-07-16"
+    },
+    {
+     "start": "2027-07-19",
+     "end": "2027-07-23"
+    }
+   ],
+   "registrationOpens": "2027-04-01",
+   "registrationDeadline": "2027-06-10",
+   "sourceUrl": "https://example.org/casals/c-sports",
+   "lastChecked": "2026-11-05"
+  },
+  {
+   "id": "c-art",
+   "status": "published",
+   "name": {
+    "en": "Test Art Casal",
+    "ca": "Test Art Casal",
+    "es": "Test Art Casal"
+   },
+   "provider": "Test Art Studio",
+   "town": "Sant Cugat del Vallès",
+   "lat": 41.4735,
+   "lng": 2.088,
+   "themes": [
+    "art"
+   ],
+   "ageMin": 4,
+   "ageMax": 10,
+   "languages": [
+    "ca",
+    "en"
+   ],
+   "pricePerWeek": 150,
+   "hours": "09:30–13:30",
+   "extendedCare": null,
+   "turns": [
+    {
+     "start": "2027-06-21",
+     "end": "2027-06-25"
+    },
+    {
+     "start": "2027-06-28",
+     "end": "2027-07-02"
+    }
+   ],
+   "registrationOpens": "2027-03-01",
+   "registrationDeadline": "2027-05-15",
+   "sourceUrl": "https://example.org/casals/c-art",
+   "lastChecked": "2026-11-05"
+  }
+ ]
+}

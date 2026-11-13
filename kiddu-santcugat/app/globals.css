@@ -24,9 +24,9 @@ svg.i { flex: none; vertical-align: -3px; }
 .topbar-inner { max-width: 1000px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; }
 .brand { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 19px; letter-spacing: -.2px; text-decoration: none; }
 .brand-mark { width: 30px; height: 30px; border-radius: 9px; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 16px; }
-.mainnav { display: flex; gap: 4px; order: 3; width: 100%; }
+.mainnav { display: flex; gap: 0; order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; }
 @media (min-width: 640px) { .mainnav { order: 0; width: auto; margin-right: auto; margin-left: 16px; } }
-.mainnav a { display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px; border-radius: 9px; font-size: 14.5px; font-weight: 600; color: var(--muted); text-decoration: none; }
+.mainnav a { display: inline-flex; align-items: center; gap: 5px; padding: 8px 9px; white-space: nowrap; flex: none; border-radius: 9px; font-size: 14.5px; font-weight: 600; color: var(--muted); text-decoration: none; }
 .mainnav a:hover { background: #f1f4f3; color: var(--ink); }
 .mainnav a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); }
 .langs { display: flex; gap: 2px; }
@@ -139,3 +139,35 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); ou
 
 footer { max-width: 1000px; margin: 28px auto 0; border-top: 1px solid var(--line); padding: 18px 16px 32px; color: var(--muted); font-size: 13px; display: grid; gap: 4px; }
 footer strong { color: var(--ink); font-weight: 600; }
+
+/* Profile, friends, casals */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.tag { background: #eef1f2; color: var(--ink); border-radius: 999px; padding: 3px 10px; font-size: 13px; font-weight: 600; }
+.tag.c { background: var(--c-soft); color: var(--c); }
+.checks { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.checks legend { font-size: 14px; font-weight: 600; padding: 0; margin-bottom: 6px; }
+.checks label { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line-strong); border-radius: 999px; padding: 8px 14px; min-height: 40px; font-size: 14.5px; font-weight: 600; cursor: pointer; background: #fff; }
+.checks input { width: 18px; height: 18px; accent-color: var(--accent); }
+.checks.stacked { flex-direction: column; flex-wrap: nowrap; }
+.checks.stacked label { border-radius: 12px; }
+.copybox input { flex: 1; }
+.friend-row { align-items: flex-start !important; }
+.friend-row form { margin: 0; }
+.mini { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.badge-ok { display: inline-flex; align-items: center; gap: 5px; color: #17784f; font-size: 13px; font-weight: 600; }
+.casal-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; gap: 10px; }
+.casal-card h3 { font-size: 17px; font-weight: 700; }
+.weeks { display: flex; flex-wrap: wrap; gap: 8px; }
+.weeks form { margin: 0; }
+.weeks button { font: inherit; font-size: 14px; font-weight: 600; border: 1px solid var(--line-strong); background: #fff; border-radius: 999px; padding: 6px 12px; min-height: 36px; cursor: pointer; }
+.weeks button:hover { border-color: var(--accent); background: var(--accent-soft); }
+.weeks button[disabled] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); cursor: default; }
+.weekrow { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; display: grid; gap: 8px; }
+.weekrow h3 { font-size: 15px; font-weight: 700; }
+.weekrow.gap { border-style: dashed; }
+.choice { background: var(--accent-soft); border-radius: 10px; padding: 10px 12px; display: grid; gap: 6px; }
+.choice .name { font-weight: 700; }
+.choice.done { background: var(--sport-soft); }
+.friendchoice { font-size: 14px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+.plan-pin { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); border: 3px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.4); transform: rotate(45deg); }
+.my-plans .card { grid-template-columns: 1fr; }

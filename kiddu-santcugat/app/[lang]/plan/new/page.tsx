@@ -4,7 +4,9 @@ import { isLang, pick, t, LOCALES } from '@/lib/i18n';
 import { loadCatalogue } from '@/lib/catalogue';
 import { visibleItems } from '@/lib/filters';
 import { filterContext } from '@/lib/server-context';
-import { groupById, memberOf } from '@/lib/session';
+import { groupById, memberOf, currentProfile } from '@/lib/session';
+import { profileById } from '@/lib/social';
+import type { Profile } from '@/lib/social-logic';
 import { addDays, dateOf, parseNaive } from '@/lib/time';
 
 export const dynamic = 'force-dynamic';
@@ -19,6 +21,8 @@ export default async function NewPlan({ params, searchParams }: { params: Promis
   const item = sp.item ? items.find((i) => i.id === sp.item && i.status === 'published') : undefined;
   const group = sp.group ? await groupById(sp.group) : null;
   const member = await memberOf(group);
+  const me = await currentProfile();
+  const friends = me ? (await Promise.all(me.friendIds.map(profileById))).filter((p): p is Profile => !!p) : [];
   const today = dateOf(ctx.now);
   const days = Array.from({ length: 15 }, (_, n) => addDays(today, n));
   const fmt = new Intl.DateTimeFormat(LOCALES[lang], { weekday: 'long', day: 'numeric', month: 'short', timeZone: 'UTC' });
@@ -35,8 +39,8 @@ export default async function NewPlan({ params, searchParams }: { params: Promis
         <input type="hidden" name="lang" value={lang} />
         {item && <input type="hidden" name="item" value={item.id} />}
         {member && group && <input type="hidden" name="group" value={group.id} />}
-        {member ? (
-          <p className="note" data-testid="organising-as">{t(lang, 'organisingAs', { name: member.firstName })}</p>
+        {me ? (
+          <p className="note" data-testid="organising-as">{t(lang, 'organisingAs', { name: me.firstName })}</p>
         ) : (
           <div className="field"><label htmlFor="name">{t(lang, 'fieldName')}</label><input id="name" name="name" type="text" required maxLength={30} autoComplete="given-name" /></div>
         )}
@@ -52,6 +56,7 @@ export default async function NewPlan({ params, searchParams }: { params: Promis
               </select>
             </div>
             <div className="field"><label htmlFor="placeName">{t(lang, 'otherPlaceLabel')}</label><input id="placeName" name="placeName" type="text" maxLength={60} /></div>
+            <div className="field"><label htmlFor="address">{t(lang, 'addressLabel')}</label><input id="address" name="address" type="text" maxLength={120} /><span className="help">{t(lang, 'addressHelp')}</span></div>
           </>
         )}
         <div className="field">
@@ -60,6 +65,20 @@ export default async function NewPlan({ params, searchParams }: { params: Promis
         </div>
         <div className="field"><label htmlFor="time">{t(lang, 'fieldTime')}</label><input id="time" name="time" type="time" defaultValue="10:00" required /></div>
         <div className="field"><label htmlFor="note">{t(lang, 'fieldNote')}</label><input id="note" name="note" type="text" maxLength={140} placeholder={t(lang, 'notePlaceholder')} /></div>
+        {me && !(member && group) && (
+          <>
+            <fieldset className="checks stacked"><legend>{t(lang, 'audienceTitle')}</legend>
+              <label><input type="radio" name="audience" value="link" defaultChecked />{t(lang, 'audLink')}</label>
+              <label><input type="radio" name="audience" value="friends" />{t(lang, 'audFriends')}</label>
+            </fieldset>
+            <fieldset className="checks stacked"><legend>{t(lang, 'whoInvited')}</legend>
+              {friends.length === 0 ? <span className="note">{t(lang, 'noFriendsToInvite')}</span> : friends.map((f) => (
+                <label key={f.id}><input type="checkbox" name="invited" value={f.id} data-name={f.firstName} defaultChecked />{f.firstName}</label>
+              ))}
+              {friends.length > 0 && <span className="help">{t(lang, 'invitedHelp')}</span>}
+            </fieldset>
+          </>
+        )}
         <button className="btn" type="submit">{t(lang, 'createPlan')}</button>
       </form>
     </div>
