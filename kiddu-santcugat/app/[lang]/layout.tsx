@@ -1,3 +1,5 @@
+import '@fontsource-variable/inter';
+import '@fontsource-variable/space-grotesk';
 import '../globals.css';
 import type { Metadata, Viewport } from 'next';
 import { notFound } from 'next/navigation';
@@ -8,7 +10,7 @@ import LangSwitch from '@/components/LangSwitch';
 import MainNav from '@/components/MainNav';
 
 export const metadata: Metadata = { title: 'Kiddu Sant Cugat', description: 'Things to do with kids in Sant Cugat and around' };
-export const viewport: Viewport = { width: 'device-width', initialScale: 1 };
+export const viewport: Viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', themeColor: [{ media: '(prefers-color-scheme: light)', color: '#f3f4fb' }, { media: '(prefers-color-scheme: dark)', color: '#070a16' }] };
 
 export default async function LangLayout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
   const { lang } = await params;

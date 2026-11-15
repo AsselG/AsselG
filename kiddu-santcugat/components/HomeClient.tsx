@@ -9,7 +9,7 @@ import { distanceLabel } from '@/lib/format';
 import { Baby, CloudRain, Clock, Euro, House, Info, LocateFixed, MapPin, TriangleAlert, Users, X } from 'lucide-react';
 import { ThemeIcon } from './Icons';
 
-const MapView = dynamic(() => import('./MapView'), { ssr: false, loading: () => <div className="map" /> });
+const MapView = dynamic(() => import('./MapView'), { ssr: false, loading: () => <div style={{ height: '100%' }} /> });
 
 interface Props {
   lang: Lang;
@@ -72,6 +72,7 @@ export default function HomeClient(p: Props) {
       {p.demo && <p className="banner" role="note"><Info className="i" size={16} aria-hidden />{d.demoBanner}</p>}
 
       <div className="page-head">
+        <span className="live">{d.liveMap.replace('{n}', String(cards.length))}</span>
         <h1 data-testid="area-name">{p.areaName}</h1>
         <p>{d.tagline}</p>
       </div>
@@ -140,10 +141,12 @@ export default function HomeClient(p: Props) {
       </section>
       {note && <p className="note" role="status" data-testid="location-note">{note}</p>}
 
+      <div className="explore">
       <div className="map" data-testid="map" data-area={p.areaName} data-center-lat={p.center[0]} data-center-lng={p.center[1]}>
         <MapView center={p.center} me={me} cards={cards} selected={selected} onSelect={setSelected} plans={p.plans} lang={p.lang} />
       </div>
 
+      <div className="results">
       <div className="section-head">
         <h2>{d.navExplore}</h2>
         <span className="count" data-testid="result-count">{cards.length ? d.results.replace('{n}', String(cards.length)) : d.noResults}</span>
@@ -174,6 +177,8 @@ export default function HomeClient(p: Props) {
           </li>
         ))}
       </ul>
+      </div>
+      </div>
     </>
   );
 }

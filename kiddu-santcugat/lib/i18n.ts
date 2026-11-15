@@ -6,6 +6,7 @@ export const LOCALES: Record<Lang, string> = { ca: 'ca-ES', es: 'es-ES', en: 'en
 
 const en = {
   tagline: 'Things to do with kids in Sant Cugat and around',
+  liveMap: 'Live map · {n} things to do',
   mission: 'It takes a village to raise a child. Sant Cugat families helping each other find good things to do together.',
   navExplore: 'Explore', navClass: 'My class',
   nearMe: 'Near me',
@@ -100,6 +101,7 @@ export type Key = keyof typeof en;
 
 const ca: Record<Key, string> = {
   tagline: 'Què fer amb nens a Sant Cugat i rodalies',
+  liveMap: 'Mapa en directe · {n} coses per fer',
   mission: 'Per educar un infant cal tot un poble. Famílies de Sant Cugat que s’ajuden a trobar bons plans per fer juntes.',
   navExplore: 'Explora', navClass: 'La meva classe',
   nearMe: 'A prop meu',
@@ -193,6 +195,7 @@ const ca: Record<Key, string> = {
 
 const es: Record<Key, string> = {
   tagline: 'Qué hacer con niños en Sant Cugat y alrededores',
+  liveMap: 'Mapa en directo · {n} planes',
   mission: 'Para educar a un niño hace falta toda una tribu. Familias de Sant Cugat que se ayudan a encontrar buenos planes para hacer juntas.',
   navExplore: 'Explorar', navClass: 'Mi clase',
   nearMe: 'Cerca de mí',
