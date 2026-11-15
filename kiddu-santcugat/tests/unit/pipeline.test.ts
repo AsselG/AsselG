@@ -75,3 +75,41 @@ describe('dedupe and golden scoring', () => {
     expect(s).toEqual({ right: 2, total: 3 });
   });
 });
+
+import { agesFrom, feedToDraft, parseRss, priceFrom, themesFrom } from '../../pipeline/feeds';
+
+describe('official feeds', () => {
+  const xml = `<rss><channel><item><title><![CDATA[Titelles en família. "On vas?"]]></title><link><![CDATA[https://x/activitat/a]]></link>
+    <description><![CDATA[<p><strong>Activitat familiar gratu&iuml;ta</strong>. Els infants menors de 12 anys han de venir acompanyats.</p>]]></description>
+    <tipus><![CDATA[Infantils]]></tipus><datainici>29/11/2026</datainici><datafi></datafi><hora>11:00 a 12:30</hora><lloc><![CDATA[Teatre Mira-sol]]></lloc><x>2,04616892</x><y>41,4679367</y></item></channel></rss>`;
+  it('reads the santcugat.cat feed fields', () => {
+    const [f] = parseRss(xml);
+    expect(f.title).toBe('Titelles en família. "On vas?"');
+    expect(f.description).toContain('Activitat familiar gratuïta');
+    const v = feedToDraft(f, { now: '2026-11-15T10:00', places: [], defaultTown: 'Sant Cugat del Vallès' });
+    expect(v.item.start).toBe('2026-11-29T11:00');
+    expect(v.item.end).toBe('2026-11-29T12:30');
+    expect([v.item.lat, v.item.lng]).toEqual([41.4679367, 2.04616892]);
+    expect(v.item.price).toBe(0);
+    expect(v.item.ageMin).toBeNull();               // "menors de 12 ... acompanyats" is not an age range
+    expect(v.item.indoor).toBe(true);
+    expect(v.item.themes).toEqual(['art']);
+    expect(v.item.description).toBeUndefined();     // the town hall's text is not copied
+    expect(v.issues).toEqual([]);
+  });
+  it('parses ages and prices the way the agenda writes them', () => {
+    expect(agesFrom('Edat: +3 anys')).toEqual({ min: 3, max: null });
+    expect(agesFrom('Per a infants de 5 a 9 anys')).toEqual({ min: 5, max: 9 });
+    expect(agesFrom('a partir de 4 anys')).toEqual({ min: 4, max: null });
+    expect(priceFrom('Preu: 5,50 €')).toBe(5.5);
+    expect(priceFrom('Entrada lliure')).toBe(0);
+    expect(priceFrom('Reserva prèvia')).toBeNull();
+    expect(themesFrom('Hora del conte a la biblioteca')).toEqual(['education']);
+    expect(themesFrom('Festa del Dia de la Infància')).toEqual(['fun']);
+  });
+  it('rejects past events and flags missing coordinates', () => {
+    const [f] = parseRss(xml);
+    expect(feedToDraft({ ...f, datainici: '01/01/2026' }, { now: '2026-11-15T10:00', places: [], defaultTown: 'x' }).rejectReason).toBe('past event');
+    expect(feedToDraft({ ...f, x: '', y: '' }, { now: '2026-11-15T10:00', places: [], defaultTown: 'x' }).issues).toContain('Location unknown: choose a place for the map');
+  });
+});

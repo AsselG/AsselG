@@ -13,7 +13,7 @@ export const STORE = '.test-store';
 export async function runPipeline(world: World, o: { pages: string[]; blocked?: boolean; now?: string; overrides?: Record<string, unknown> }): Promise<RunSummary> {
   const ns = world.ns;
   const host = o.blocked ? 'http://127.0.0.1:3101' : SITE;
-  const sources = o.pages.map((p) => ({ id: `${p.replace(/\W+/g, '-')}-${ns}`, name: `Test ${p}`, type: 'web', enabled: true, url: `${host}/${p}?ns=${ns}` }));
+  const sources = o.pages.map((p) => ({ id: `${p.replace(/\W+/g, '-')}-${ns}`, name: `Test ${p}`, type: p.endsWith('.rss') ? 'rss' : 'web', enabled: true, url: `${host}/${p}?ns=${ns}` }));
   fs.mkdirSync('test-results', { recursive: true });
   const file = path.resolve('test-results', `sources-${ns}-${Date.now()}.json`);
   fs.writeFileSync(file, JSON.stringify({ blocklist: o.blocked ? ['127.0.0.1'] : [], areas: { 'sant-cugat': sources } }));
@@ -50,10 +50,11 @@ export async function adminLogin(page: Page, key = 'test-admin-key') {
 }
 
 export const t = (world: World, name: string) => `${name} ${world.ns}`;
+const attr = (v: string) => v.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 
 export async function openDraft(page: Page, world: World, name: string) {
   await page.goto('/en/admin/queue');
-  await page.locator(`[data-testid="draft"][data-title="${t(world, name)}"]`).getByRole('link', { name: 'Review' }).click();
+  await page.locator(`[data-testid="draft"][data-title="${attr(t(world, name))}"]`).getByRole('link', { name: 'Review' }).click();
   await page.waitForURL(/\/admin\/queue\/[^/]+$/);
 }
 

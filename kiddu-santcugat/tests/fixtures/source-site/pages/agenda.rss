@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel><title>Agenda (prova)</title>
+<item><title><![CDATA[Taller de prova "Dibuix" {ns}]]></title><link><![CDATA[https://example.org/activitat/taller-{ns}]]></link><guid isPermaLink="false">1</guid>
+<description><![CDATA[<p>Amb <strong>Art de Prova</strong>. Aprendrem a dibuixar amb filferro.</p><p>Edat: +6 anys. Reserva prèvia.</p>]]></description>
+<idtipus>7</idtipus><tipus><![CDATA[Infantils]]></tipus><datainici>20/06/2027</datainici><datafi></datafi><hora>17:30</hora><lloc><![CDATA[Biblioteca de prova]]></lloc><x>2,0880</x><y>41,4715</y></item>
+<item><title><![CDATA[Festa de prova a la plaça {ns}]]></title><link><![CDATA[https://example.org/activitat/festa-{ns}]]></link><guid isPermaLink="false">2</guid>
+<description><![CDATA[<p><strong>Activitat familiar gratu&iuml;ta</strong>. Els infants menors de 12 anys han de venir acompanyats.</p>]]></description>
+<idtipus>7</idtipus><tipus><![CDATA[Infantils]]></tipus><datainici>21/06/2027</datainici><datafi></datafi><hora>10:00</hora><lloc><![CDATA[Plaça Nova de Prova]]></lloc><x></x><y></y></item>
+<item><title><![CDATA[Contes passats {ns}]]></title><link><![CDATA[https://example.org/activitat/passat-{ns}]]></link><guid isPermaLink="false">3</guid>
+<description><![CDATA[<p>Edat: +3 anys</p>]]></description>
+<idtipus>7</idtipus><tipus><![CDATA[Infantils]]></tipus><datainici>01/03/2026</datainici><datafi></datafi><hora>11:00</hora><lloc><![CDATA[Biblioteca de prova]]></lloc><x>2,0880</x><y>41,4715</y></item>
+</channel></rss>

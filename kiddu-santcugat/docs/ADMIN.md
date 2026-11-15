@@ -14,6 +14,18 @@ config/sources.yaml ──► pipeline (npm run pipeline) ──► store (Netli
 6. **Publishing:** with `publishing.auto_publish: false` (pilot default) everything waits in the review queue. With it on, only drafts with confidence ≥ `auto_publish_min_confidence`, no issues and a known place publish themselves (marked "auto").
 7. **Cost guard:** when this month's AI spend reaches `ai.monthly_budget_eur`, the pipeline stops calling the AI and only does freshness checks; the dashboard shows an alert.
 
+## Two kinds of sources
+- **Official structured feeds (`type: rss`)**, e.g. the town hall's children's agenda feed: date, time, venue and map coordinates are used as given. **No AI, no cost, no key needed.** Age and price are read from the description with fixed patterns; themes are guessed from keywords (check them in the review queue). The town hall's own description text is not copied: families see the facts and a link to the official page.
+- **Web pages (`type: web`)**: the AI extracts events and our checks verify every fact against the page. Needs `ANTHROPIC_API_KEY`.
+
+First real run (2026-11-15): the town hall's "Infantils" feed gave 22 upcoming events, 20 with coordinates, at €0.
+
+## The Anthropic API key
+- You only need it for `type: web` sources. The town hall feed does not need it.
+- Create it in the Anthropic Console in a separate workspace (e.g. "kiddu") with a monthly spend limit, so a leaked key cannot cost more than that.
+- Keep it only where the pipeline runs: in your terminal (`export ANTHROPIC_API_KEY=...`) or as a GitHub Actions secret. Never in chat, never in a committed file, never in Netlify (the website does not use it).
+- If it leaks: delete it in the Console and create a new one.
+
 ## Admin console
 `https://<site>/en/admin/login` with `KIDDU_ADMIN_KEY` (Netlify > Site configuration > Environment variables).
 - **Dashboard:** queue size, AI spend vs budget, last run, every source's status (OK, unchanged, blocked by robots.txt, error...).

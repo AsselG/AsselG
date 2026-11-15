@@ -15,9 +15,12 @@ class FileKV implements KV {
   async get<T>(key: string) {
     try { return JSON.parse(await fs.readFile(this.file(key), 'utf8')) as T; } catch { return null; }
   }
+  /** Write to a temporary file, then rename: readers in other processes never see a half-written document. */
   async set(key: string, value: unknown) {
     await fs.mkdir(this.dir, { recursive: true });
-    await fs.writeFile(this.file(key), JSON.stringify(value));
+    const tmp = `${this.file(key)}.${process.pid}.${Math.random().toString(36).slice(2)}.tmp`;
+    await fs.writeFile(tmp, JSON.stringify(value));
+    await fs.rename(tmp, this.file(key));
   }
   async del(key: string) { await fs.rm(this.file(key), { force: true }); }
   async list(prefix: string) {

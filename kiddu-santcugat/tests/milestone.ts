@@ -13,6 +13,7 @@ export const MILESTONE_FEATURES = [
   'features/14_invited_plans_on_map.feature',
   'features/15_casal_planning.feature',
   'features/16_admin_console.feature',
+  'features/17_official_feeds.feature',
 ];
 
 /** Scenarios the gate skips: they need data only the owner can provide. */

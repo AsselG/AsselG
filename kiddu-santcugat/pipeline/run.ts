@@ -12,7 +12,8 @@ import { toNaive } from '../lib/time';
 import { htmlToText } from './html';
 import { PoliteFetcher } from './fetch';
 import { makeExtractor, type Extractor, type ExtractResult } from './extract';
-import { verify } from './verify';
+import { verify, type Verified } from './verify';
+import { feedToDraft, parseRss } from './feeds';
 
 export interface SourceDef { id: string; name?: string; type: string; url?: string; enabled: boolean; note?: string }
 interface SourcesFile { blocklist?: string[]; areas: Record<string, SourceDef[]> }
@@ -70,38 +71,46 @@ export async function runPipeline(opts: { area: string; only?: string; extractor
   for (const s of sources) {
     const r: SourceResult = { id: s.id, name: s.name ?? s.id, url: s.url ?? '', status: 'ok', extracted: 0, queued: 0, published: 0, rejected: 0 };
     run.sources.push(r);
-    if (!s.enabled || s.type !== 'web' || !s.url) { r.status = 'disabled'; continue; }
+    if (!s.enabled || !['web', 'rss'].includes(s.type) || !s.url) { r.status = 'disabled'; continue; }
     const host = new URL(s.url).hostname.toLowerCase();
     if (blocklist.some((d) => host === d || host.endsWith(`.${d}`))) { r.status = 'blocklisted'; continue; }
     if (!(await fetcher.isAllowed(s.url))) { r.status = 'blocked-robots'; continue; }
     const page = await fetcher.page(s.url);
     if (!page.ok) { r.status = 'error'; r.error = page.error; continue; }
     run.totals.fetched += 1;
-    const text = htmlToText(page.html, pc.max_page_chars);
+    const isFeed = s.type === 'rss';
+    const text = isFeed ? page.html : htmlToText(page.html, pc.max_page_chars);
     const h = hash(text);
     const cache = await getPageCache(s.url);
     if (cache?.hash === h) { r.status = 'unchanged'; run.totals.unchanged += 1; await refreshFreshness(s.url); continue; }
     run.totals.changed += 1;
-    if (spent >= budget) { run.budgetReached = true; r.status = 'skipped-budget'; await refreshFreshness(s.url); continue; }
 
-    const input = { url: s.url, text, today: started.slice(0, 10), areaName: area.name, effort };
-    let res = await extractor.extract({ ...input, model: primary });
-    charge(primary, res);
-    let model = primary;
-    if (!res.ok) {
-      log(`${s.id}: ${res.error} with ${primary}; retrying once with ${fallback}`);
-      run.totals.escalated += 1;
-      if (spent >= budget) { run.budgetReached = true; r.status = 'skipped-budget'; continue; }
-      res = await extractor.extract({ ...input, model: fallback });
-      charge(fallback, res);
-      model = fallback;
+    // Structured official feeds: facts come straight from the feed, no AI involved.
+    let candidates: { v: Verified; excerpt: string }[];
+    let model = 'feed';
+    if (isFeed) {
+      candidates = parseRss(text).map((f) => ({ v: feedToDraft(f, { now: started, places, defaultTown: area.name }), excerpt: `${f.title}\n${f.datainici} ${f.hora}\n${f.lloc}\n\n${f.description}`.slice(0, 6000) }));
+    } else {
+      if (spent >= budget) { run.budgetReached = true; r.status = 'skipped-budget'; await refreshFreshness(s.url); continue; }
+      const input = { url: s.url, text, today: started.slice(0, 10), areaName: area.name, effort };
+      let res = await extractor.extract({ ...input, model: primary });
+      charge(primary, res);
+      model = primary;
+      if (!res.ok) {
+        log(`${s.id}: ${res.error} with ${primary}; retrying once with ${fallback}`);
+        run.totals.escalated += 1;
+        if (spent >= budget) { run.budgetReached = true; r.status = 'skipped-budget'; continue; }
+        res = await extractor.extract({ ...input, model: fallback });
+        charge(fallback, res);
+        model = fallback;
+      }
+      if (!res.ok) { r.status = 'invalid-output'; r.error = res.error; run.totals.invalid += 1; continue; }
+      const excerpt = text.slice(0, 6000);
+      candidates = res.data.items.map((x) => ({ v: verify(x, text, { now: started, url: s.url!, places, defaultTown: area.name, sourceUrl: s.url! }), excerpt }));
     }
-    if (!res.ok) { r.status = 'invalid-output'; r.error = res.error; run.totals.invalid += 1; continue; }
 
-    const excerpt = text.slice(0, 6000);
-    for (const x of res.data.items) {
+    for (const { v, excerpt } of candidates) {
       run.totals.extracted += 1; r.extracted += 1;
-      const v = verify(x, text, { now: started, url: s.url, places, defaultTown: area.name, sourceUrl: s.url });
       if (v.rejectReason) { run.totals.rejected += 1; r.rejected += 1; continue; }
       const key = dedupeKey({ title: firstText(v.item.title), start: v.item.start ?? null, placeName: v.item.placeName ?? null, town: v.item.town });
       const id = draftIdOf(key);

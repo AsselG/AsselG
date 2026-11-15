@@ -23,6 +23,6 @@ http.createServer((req, res) => {
   const file = path.join(dir, path.normalize(url.pathname).replace(/^\/+/, ''));
   if (!file.startsWith(dir) || !fs.existsSync(file)) { res.statusCode = 404; return res.end('not found'); }
   const html = fs.readFileSync(file, 'utf8').replaceAll('{ns}', ns).replaceAll('{v}', String(versions.get(ns) ?? 1));
-  res.setHeader('content-type', 'text/html; charset=utf-8');
+  res.setHeader('content-type', file.endsWith('.rss') ? 'application/rss+xml; charset=utf-8' : 'text/html; charset=utf-8');
   res.end(html);
 }).listen(3101);

@@ -69,7 +69,7 @@ export class PoliteFetcher {
       const r = await this.get(url);
       if (!r.ok) return { ok: false, error: `HTTP ${r.status}` };
       const type = r.headers.get('content-type') ?? '';
-      if (!/text\/html|text\/plain|application\/xhtml/.test(type)) return { ok: false, error: `unsupported content type ${type}` };
+      if (!/text\/html|text\/plain|application\/xhtml|xml/.test(type)) return { ok: false, error: `unsupported content type ${type}` };
       const html = await r.text();
       if (html.length > 3_000_000) return { ok: false, error: 'page too large' };
       return { ok: true, html };
