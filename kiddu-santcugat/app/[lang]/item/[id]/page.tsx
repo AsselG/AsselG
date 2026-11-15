@@ -17,7 +17,7 @@ export default async function ItemPage({ params }: { params: Promise<{ lang: str
   const { lang, id } = await params;
   if (!isLang(lang)) notFound();
   const L = lang as Lang;
-  const catalogue = loadCatalogue();
+  const catalogue = await loadCatalogue();
   const item = catalogue.items.find((i) => i.id === id && i.status === 'published');
   if (!item) notFound();
   const ctx = await filterContext();

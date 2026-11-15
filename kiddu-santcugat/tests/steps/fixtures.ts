@@ -9,6 +9,9 @@ export const site = YAML.parse(fs.readFileSync('config/site.yaml', 'utf8'));
 export const areas = YAML.parse(fs.readFileSync('config/areas.yaml', 'utf8')).areas;
 export const area = areas[site.area.default];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type RunSummary = any;
+
 export interface World {
   now: string;
   selectedId?: string;
@@ -28,12 +31,15 @@ export interface World {
   planDay?: string;
   planTitle?: string;
   visitors: Record<string, import('@playwright/test').Page>;
+  ns: string;
+  runs: RunSummary[];
+  overrides: Record<string, unknown>;
   extra: Record<string, import('@playwright/test').Page>;
 }
 
 export const test = base.extend<{ world: World }>({
   world: async ({}, use) => {
-    await use({ now: FIXED_NOW, requests: [], visitors: {}, extra: {} });
+    await use({ now: FIXED_NOW, requests: [], visitors: {}, extra: {}, ns: `t${Math.random().toString(36).slice(2, 8)}`, runs: [], overrides: {} });
   },
   context: async ({ context }, use) => {
     await context.addCookies([

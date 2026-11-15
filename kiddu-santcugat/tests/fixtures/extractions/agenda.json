@@ -1,0 +1,88 @@
+{
+ "default": {
+  "items": [
+   {
+    "kind": "event",
+    "title": "Hora del conte {ns}",
+    "summary": "Hora del conte: activitat per a famílies.",
+    "language": "ca",
+    "themes": [
+     "education"
+    ],
+    "ageMin": 3,
+    "ageMax": 6,
+    "price": 0,
+    "isFree": true,
+    "indoor": true,
+    "start": "2027-06-12T11:00",
+    "end": null,
+    "placeName": "Biblioteca de prova",
+    "address": "Carrer de Prova 1",
+    "town": "Sant Cugat del Vallès",
+    "bookingUrl": null,
+    "evidence": {
+     "title": "Hora del conte {ns}",
+     "date": "Dissabte 12 de juny de 2027, a les 11:00 h",
+     "price": "Activitat gratuïta",
+     "age": "Per a infants de 3 a 6 anys",
+     "place": "Biblioteca de prova, Carrer de Prova 1"
+    }
+   },
+   {
+    "kind": "event",
+    "title": "Taller de titelles {ns}",
+    "summary": "Taller de titelles: activitat per a famílies.",
+    "language": "ca",
+    "themes": [
+     "art",
+     "fun"
+    ],
+    "ageMin": 5,
+    "ageMax": 9,
+    "price": 5,
+    "isFree": false,
+    "indoor": true,
+    "start": "2027-06-13T17:00",
+    "end": "2027-06-13T18:30",
+    "placeName": "Espai Jove Prova",
+    "address": null,
+    "town": "Sant Cugat del Vallès",
+    "bookingUrl": null,
+    "evidence": {
+     "title": "Taller de titelles {ns}",
+     "date": "Diumenge 13 de juny de 2027, de 17:00 a 18:30 h",
+     "price": "Preu: 5 €",
+     "age": "Per a infants de 5 a 9 anys",
+     "place": "Lloc: Espai Jove Prova"
+    }
+   },
+   {
+    "kind": "event",
+    "title": "Concert familiar {ns}",
+    "summary": "Concert familiar: activitat per a famílies.",
+    "language": "ca",
+    "themes": [
+     "fun"
+    ],
+    "ageMin": null,
+    "ageMax": null,
+    "price": 0,
+    "isFree": true,
+    "indoor": false,
+    "start": "2027-06-19T12:00",
+    "end": null,
+    "placeName": "Plaça de Prova",
+    "address": null,
+    "town": "Sant Cugat del Vallès",
+    "bookingUrl": null,
+    "evidence": {
+     "title": "Concert familiar {ns}",
+     "date": "Dissabte 19 de juny de 2027 a les 12:00 h",
+     "price": "Gratuït",
+     "age": null,
+     "place": "a la Plaça de Prova"
+    }
+   }
+  ]
+ }
+}

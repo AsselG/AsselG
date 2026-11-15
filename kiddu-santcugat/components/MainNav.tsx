@@ -10,7 +10,8 @@ export default function MainNav({ lang, classHref, labels }: { lang: string; cla
   const inClass = sec('class|g|groups');
   const inCasals = sec('casals');
   const inFamily = sec('me|f|restore');
-  const inExplore = !inClass && !inCasals && !inFamily;
+  const inAdmin = sec('admin');
+  const inExplore = !inClass && !inCasals && !inFamily && !inAdmin;
   const cur = (on: boolean) => (on ? ('page' as const) : undefined);
   return (
     <nav className="mainnav" aria-label="Main">

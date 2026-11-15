@@ -17,7 +17,7 @@ export default async function NewPlan({ params, searchParams }: { params: Promis
   if (!isLang(lang)) notFound();
   const sp = await searchParams;
   const ctx = await filterContext();
-  const items = loadCatalogue().items;
+  const items = (await loadCatalogue()).items;
   const item = sp.item ? items.find((i) => i.id === sp.item && i.status === 'published') : undefined;
   const group = sp.group ? await groupById(sp.group) : null;
   const member = await memberOf(group);

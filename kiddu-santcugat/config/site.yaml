@@ -44,3 +44,17 @@ casals:
   season: 2027-summer
   share_with_friends_default: false   # 15: families must switch sharing on; privacy first
   registration_soon_days: 30          # 15: "registration opens soon" badge
+
+catalogue:
+  include_demo_data: true            # set to false for the real pilot: families then see only gathered + approved items
+
+pipeline:                            # 07, 11, 16: AI gathering of events and activities
+  user_agent: "KidduBot/0.1 (+https://kiddu-santcugat.netlify.app/en)"
+  request_delay_ms: 1500             # pause between two requests to the same website
+  timeout_ms: 15000
+  max_page_chars: 40000              # longer pages are cut before they reach the model
+  extraction_effort: low             # model effort for extraction (low is enough for copying facts)
+  eur_per_usd: 0.92                  # to show AI costs in euros
+  prices_usd_per_million_tokens:     # Anthropic list prices; update when they change
+    claude-haiku-5-5: { input: 0.10, output: 0.50 }
+    claude-sonnet-5-5: { input: 2.00, output: 10.00 }

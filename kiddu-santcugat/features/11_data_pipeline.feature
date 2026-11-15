@@ -19,6 +19,8 @@ Feature: Nightly AI data gathering
     Then the pipeline stops calling AI and only refreshes existing items' freshness checks
     And I get an alert
 
+  # Needs 50 real Sant Cugat pages labelled by hand (owner, milestone M0). Skipped by the gate until they exist.
+  @needs-owner-data
   Scenario: Golden set accuracy
     Given the golden set of 50 hand-checked pages
     When the extraction prompt or model changes

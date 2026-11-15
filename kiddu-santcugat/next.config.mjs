@@ -5,7 +5,7 @@ const nextConfig = {
   async headers() {
     // Private pages (plans, class groups, invites, admin): never indexed or cached.
     return [{
-      source: '/:lang(ca|es|en)/:section(p|plan|g|class|groups)/:path*',
+      source: '/:lang(ca|es|en)/:section(p|plan|g|class|groups|admin|me|f|restore)/:path*',
       headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' }, { key: 'Cache-Control', value: 'private, no-store' }],
     }];
   },

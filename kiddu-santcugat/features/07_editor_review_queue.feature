@@ -15,7 +15,8 @@ Feature: Editor controls what gets published
     Then the item is in the review queue and not public
 
   Scenario: Editor approves, edits or rejects
-    Given I am logged in as editor
+    Given the pipeline has queued drafts from the Sant Cugat sources
+    And I am logged in as editor
     When I open the review queue
     Then I see each draft next to its source text
     And I can approve, edit fields, or reject with a reason

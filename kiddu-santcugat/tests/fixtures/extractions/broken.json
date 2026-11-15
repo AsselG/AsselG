@@ -1,0 +1,34 @@
+{
+ "claude-haiku-5-5": "INVALID",
+ "claude-sonnet-5-5": {
+  "items": [
+   {
+    "kind": "event",
+    "title": "Festa de prova {ns}",
+    "summary": "Festa de prova: activitat per a famílies.",
+    "language": "ca",
+    "themes": [
+     "fun"
+    ],
+    "ageMin": null,
+    "ageMax": null,
+    "price": 0,
+    "isFree": true,
+    "indoor": false,
+    "start": "2027-07-03T10:00",
+    "end": null,
+    "placeName": "Plaça de Prova",
+    "address": null,
+    "town": "Sant Cugat del Vallès",
+    "bookingUrl": null,
+    "evidence": {
+     "title": "Festa de prova {ns}",
+     "date": "Dissabte 3 de juliol de 2027 a les 10:00 h",
+     "price": "Gratuït",
+     "age": null,
+     "place": "Plaça de Prova"
+    }
+   }
+  ]
+ }
+}

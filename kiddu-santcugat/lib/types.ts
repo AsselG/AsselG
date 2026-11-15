@@ -36,6 +36,10 @@ export interface Item {
   sourceUrl: string;
   /** YYYY-MM-DD */
   lastChecked: string;
+  /** Gathered items: published automatically or by an editor. */
+  origin?: 'auto' | 'editor';
+  /** Every page this item was found on. */
+  sources?: string[];
 }
 
 export interface Catalogue {

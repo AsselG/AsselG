@@ -1,0 +1,60 @@
+{
+ "default": {
+  "items": [
+   {
+    "kind": "event",
+    "title": "Concert familiar {ns}",
+    "summary": "Concert familiar: activitat per a famílies.",
+    "language": "ca",
+    "themes": [
+     "fun"
+    ],
+    "ageMin": null,
+    "ageMax": null,
+    "price": 0,
+    "isFree": true,
+    "indoor": false,
+    "start": "2027-06-19T12:00",
+    "end": null,
+    "placeName": "Plaça de Prova",
+    "address": null,
+    "town": "Sant Cugat del Vallès",
+    "bookingUrl": null,
+    "evidence": {
+     "title": "Concert familiar {ns}",
+     "date": "19/06/2027, 12:00 h",
+     "price": "Entrada lliure",
+     "age": null,
+     "place": "Plaça de Prova"
+    }
+   },
+   {
+    "kind": "event",
+    "title": "Teatre de prova {ns}",
+    "summary": "Teatre de prova: activitat per a famílies.",
+    "language": "ca",
+    "themes": [
+     "art"
+    ],
+    "ageMin": 4,
+    "ageMax": null,
+    "price": 8,
+    "isFree": false,
+    "indoor": true,
+    "start": "2027-06-26T18:00",
+    "end": null,
+    "placeName": "Teatre de Prova",
+    "address": null,
+    "town": "Sant Cugat del Vallès",
+    "bookingUrl": null,
+    "evidence": {
+     "title": "Teatre de prova {ns}",
+     "date": "Dissabte 26 de juny a les 18:00 h",
+     "price": "Preu: 8 €",
+     "age": "a partir de 4 anys",
+     "place": "Teatre de Prova"
+    }
+   }
+  ]
+ }
+}

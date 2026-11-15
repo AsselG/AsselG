@@ -29,8 +29,12 @@ class FileKV implements KV {
 
 class BlobsKV implements KV {
   private store: Promise<import('@netlify/blobs').Store> | null = null;
+  /** siteID + token let the pipeline write to the hosted store from outside Netlify (a laptop, GitHub Actions). */
+  constructor(private remote?: { siteID: string; token: string }) {}
   private get s() {
-    this.store ??= import('@netlify/blobs').then((m) => m.getStore({ name: 'kiddu', consistency: 'strong' }));
+    this.store ??= import('@netlify/blobs').then((m) => this.remote
+      ? m.getStore({ name: 'kiddu', siteID: this.remote.siteID, token: this.remote.token, consistency: 'strong' })
+      : m.getStore({ name: 'kiddu', consistency: 'strong' }));
     return this.store;
   }
   async get<T>(key: string) { return ((await (await this.s).get(key, { type: 'json' })) as T | null) ?? null; }
@@ -49,7 +53,8 @@ export function store(): KV {
   if (kv) return kv;
   const dir = process.env.KIDDU_STORE_DIR;
   const onNetlify = !!(process.env.NETLIFY_BLOBS_CONTEXT || process.env.AWS_LAMBDA_FUNCTION_NAME);
-  kv = dir ? new FileKV(dir) : onNetlify ? new BlobsKV() : new FileKV('.data');
+  const site = process.env.KIDDU_BLOBS_SITE_ID, token = process.env.KIDDU_BLOBS_TOKEN;
+  kv = dir ? new FileKV(dir) : site && token ? new BlobsKV({ siteID: site, token }) : onNetlify ? new BlobsKV() : new FileKV('.data');
   return kv;
 }
-export const storeKind = () => (process.env.KIDDU_STORE_DIR ? 'file(test)' : process.env.NETLIFY_BLOBS_CONTEXT || process.env.AWS_LAMBDA_FUNCTION_NAME ? 'netlify-blobs' : 'file(.data)');
+export const storeKind = () => (process.env.KIDDU_STORE_DIR ? 'file(test)' : process.env.KIDDU_BLOBS_SITE_ID ? 'netlify-blobs(remote)' : process.env.NETLIFY_BLOBS_CONTEXT || process.env.AWS_LAMBDA_FUNCTION_NAME ? 'netlify-blobs' : 'file(.data)');

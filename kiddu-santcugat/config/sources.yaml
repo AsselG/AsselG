@@ -1,29 +1,49 @@
-# Data sources. The pipeline only fetches what is listed and enabled here.
-# Status of each source must be checked before enabling (terms of use, robots.txt).
-shared_regional:
-  - id: osm-playgrounds
-    type: overpass            # OpenStreetMap: leisure=playground|park|sports_centre, amenity=library...
-    enabled: true
-  - id: diba-agenda
-    type: api                 # Diputació de Barcelona open data (do.diba.cat) - library and cultural events by municipality; verify coverage
-    enabled: true
-  - id: gencat-open-data
-    type: api                 # analisi.transparenciacatalunya.cat (Socrata) - check for event/equipment datasets
-    enabled: false
+# Sources the AI pipeline reads (features 07, 11, 16). Only `enabled: true` + `type: web` sources are fetched.
+# Before enabling a source: open its robots.txt and terms of use, and note what you found in `note`.
+# The pipeline always identifies itself (KidduBot), obeys robots.txt and waits between requests (config/site.yaml > pipeline).
+# Facts (date, place, price) are not copyrighted; descriptions are, so the AI writes its own summary and every item links to its source.
+
+blocklist: []            # domains never fetched, e.g. [example.com]
 
 areas:
   sant-cugat:
-    - id: ajuntament-agenda
-      type: web               # Ajuntament de Sant Cugat agenda pages (no open data portal found) - scrape politely
-      enabled: true
-    - id: biblioteques-sant-cugat
+    - id: biblioteca-gabriel-ferrater
+      name: Biblioteca Central Gabriel Ferrater (agenda, Diputació de Barcelona)
       type: web
-      enabled: true
-    - id: venues-manual
-      type: manual            # trampoline parks, climbing gyms, indoor play, museums: added by editor
-      enabled: true
-    - id: family-guides
-      type: web               # e.g. Femturisme, Escapada amb nens - check terms; use as hints, link to them
+      url: https://genius.diba.cat/sant-cugat-del-valles-biblioteca-gabriel-ferrater
       enabled: false
+      note: Public library agenda (story time, Bibliojocs, toddler workshops). Check robots.txt and whether the Diputació open-data API gives the same events in structured form.
 
-blocklist: []
+    - id: ajuntament-agenda
+      name: Ajuntament de Sant Cugat - agenda
+      type: web
+      url: https://www.santcugat.cat/
+      enabled: false
+      note: Replace the url with the exact agenda page (children/families filter if there is one). Official source; check terms.
+
+    - id: teatre-auditori
+      name: Teatre-Auditori Sant Cugat - family programme
+      type: web
+      url: ""
+      enabled: false
+      note: Add the family programme page url.
+
+    - id: museu-sant-cugat
+      name: Museu de Sant Cugat - family activities
+      type: web
+      url: ""
+      enabled: false
+      note: Add the families/activities page url.
+
+    - id: osm-playgrounds
+      name: OpenStreetMap playgrounds and parks
+      type: overpass
+      enabled: false
+      note: Not built yet. Places (not events) come better from OpenStreetMap (ODbL, attribution required) than from AI.
+
+    - id: family-guides
+      name: Commercial family guides (Escapada amb nens, Femturisme, Surtdecasa)
+      type: web
+      url: ""
+      enabled: false
+      note: Do not ingest without written permission. Their listings are protected databases (EU database right); use them only to discover official sources.

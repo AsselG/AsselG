@@ -1,0 +1,33 @@
+[
+ {
+  "id": "biblioteca-prova",
+  "name": "Biblioteca de prova",
+  "aliases": [
+   "Biblioteca de prova",
+   "Carrer de Prova 1"
+  ],
+  "address": "Carrer de Prova 1, Sant Cugat del Vallès",
+  "lat": 41.4715,
+  "lng": 2.088
+ },
+ {
+  "id": "placa-prova",
+  "name": "Plaça de Prova",
+  "aliases": [
+   "Plaça de Prova"
+  ],
+  "address": "Plaça de Prova, Sant Cugat del Vallès",
+  "lat": 41.473,
+  "lng": 2.0855
+ },
+ {
+  "id": "teatre-prova",
+  "name": "Teatre de Prova",
+  "aliases": [
+   "Teatre de Prova"
+  ],
+  "address": "Rambla de Prova 2, Sant Cugat del Vallès",
+  "lat": 41.4745,
+  "lng": 2.0835
+ }
+]

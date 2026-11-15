@@ -36,3 +36,5 @@ Deciding scope; accepting/rejecting review findings; deploys, promotions, databa
 ## Project notes
 - Milestone scope for the gate: `tests/milestone.ts`. Fixture clock: Wed 2026-11-11 10:00 (`kiddu_now` cookie, only with `KIDDU_TEST_HOOKS=1`).
 - `npm run gate` rebuilds `.next`. After any experiment on the code, rebuild before starting a server for screenshots.
+- Pipeline tests run the real CLI (`pipeline/cli.ts`) against the fake site in tests/fixtures/source-site with the fake model (KIDDU_EXTRACTOR=mock, answers in tests/fixtures/extractions). Each scenario uses its own `ns` so parallel runs do not see each other.
+- Never call the real model in the gate. The golden set (`npm run pipeline:golden`) is the only place real model output is checked.

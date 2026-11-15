@@ -3,11 +3,18 @@
 Website with places, events and activities for families in Sant Cugat del Vallès and around.
 Built acceptance-first (ATDD): the scenarios in `features/` are the specification, owned by the product owner.
 
-> Status: **M1 browse + class groups, playdates, family profiles, invited plans on the map, casal planner** (features 01–04, 08, 09, 12–15): 65 acceptance scenarios and 28 unit tests pass. Data is a **demo fixture**, not real places or casals yet.
+> Status: **M1 browse + class groups, playdates, family profiles, invited plans on the map, casal planner, AI admin (gathering pipeline + review console)** (features 01–04, 07–09, 11–16): 79 acceptance scenarios and 37 unit tests pass; the golden-set scenario waits for 50 hand-labelled real pages. Data is a **demo fixture**, not real places or casals yet.
 
 | Explore + invitations | My family | Casals | My casal plan |
 |---|---|---|---|
 | <img src="docs/screenshots/home.png" width="170"> | <img src="docs/screenshots/me.png" width="170"> | <img src="docs/screenshots/casals.png" width="170"> | <img src="docs/screenshots/casal-plan.png" width="170"> |
+
+## AI admin (gathering events and activities)
+How it works, how to run it, the pilot checklist and costs: **[docs/ADMIN.md](docs/ADMIN.md)**.
+
+| Dashboard | Review queue | Draft next to its source |
+|---|---|---|
+| <img src="docs/screenshots/admin-dashboard.png" width="260"> | <img src="docs/screenshots/admin-queue.png" width="260"> | <img src="docs/screenshots/admin-review.png" width="260"> |
 
 ## Test site
 
@@ -57,6 +64,9 @@ lib/i18n.ts                    Català / Español / English texts
 lib/social.ts, social-logic.ts   class groups, plans, RSVPs (rules in social-logic.ts, storage in social.ts + store.ts)
 app/api/*                      form endpoints: groups, join, leave, plans, rsvp, cancel, profile, connect, casals, health
 app/[lang]/me, f, restore      family profile, personal connect link, recovery link
+pipeline/                      AI gathering: fetch (robots.txt, polite), clean, extract (Claude, strict JSON), verify (quotes must be on the page), dedupe, publish/queue, cost guard; golden-set check
+app/[lang]/admin               admin console: login, dashboard, review queue + editor, published, runs
+lib/gathering.ts               drafts, published items, runs, page cache (store); publish/unpublish
 app/[lang]/casals              casal browse + my casal plan; data in data/casals.json (tests: CASALS_PATH)
 app/[lang]/p, g, class, plan   plan page, invite/join page, class page, plan form
 lib/server-context.ts          clock, weather (Open-Meteo, no key), test hooks

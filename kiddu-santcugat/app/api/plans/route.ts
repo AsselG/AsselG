@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const form = await readForm(req);
   const now = await clock();
   const itemId = form.get('item') && form.get('item') !== 'other' ? form.get('item') : undefined;
-  const item = itemId ? loadCatalogue().items.find((i) => i.id === itemId && i.status === 'published') : undefined;
+  const item = itemId ? (await loadCatalogue()).items.find((i) => i.id === itemId && i.status === 'published') : undefined;
   const title = item ? pick(item.title, form.lang, item.originalLanguage) : cleanText(form.get('placeName'), 60);
   const start = validStart(form.get('date'), form.get('time'), now);
   const me = await currentProfile();

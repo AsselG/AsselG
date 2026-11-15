@@ -24,7 +24,7 @@ export default async function Home({
   const area = areaConfig();
   const ctx = await filterContext();
   const filters = parseFilters(await searchParams, site.themes);
-  const catalogue = loadCatalogue();
+  const catalogue = await loadCatalogue();
   const cards = visibleItems(catalogue.items, filters, ctx).map((v) => toCard(v, lang, ctx.now));
   const rain = await rainProbabilityToday(ctx.center);
   const rainy = rain != null && rain >= site.weather.rainy_day_chip_min_rain_probability;

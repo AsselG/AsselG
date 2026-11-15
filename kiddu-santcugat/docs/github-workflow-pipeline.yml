@@ -1,0 +1,22 @@
+# Template: copy to .github/workflows/pipeline.yml once Kiddu has its own repository.
+# Secrets to add in GitHub (Settings > Secrets and variables > Actions):
+#   ANTHROPIC_API_KEY, KIDDU_BLOBS_SITE_ID (the Netlify site id), KIDDU_BLOBS_TOKEN (a Netlify personal access token)
+name: Kiddu pipeline
+on:
+  workflow_dispatch: {}
+  # schedule:
+  #   - cron: "17 2 * * *"   # every night 02:17 UTC; switch on after the first manual runs look right
+jobs:
+  gather:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci
+      - run: npm run pipeline -- --area sant-cugat
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          KIDDU_BLOBS_SITE_ID: ${{ secrets.KIDDU_BLOBS_SITE_ID }}
+          KIDDU_BLOBS_TOKEN: ${{ secrets.KIDDU_BLOBS_TOKEN }}
